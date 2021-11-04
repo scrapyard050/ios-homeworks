@@ -139,7 +139,7 @@ class ProfileHeaderView: UIView {
     /// @brief Задание констрейнтов для настройки отображения компонента uitextfiled
     /// Поскольку на макетах нет значений отступов, то задем свои констрейнты
     ///
-    func setupStatusTextFiled() {
+    func setupStatusTextFiledLayout() {
         statusTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: self.frame.width/2).isActive = true
         statusTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         statusTextField.bottomAnchor.constraint(equalTo: self.statusButton.topAnchor, constant: -5).isActive = true
@@ -179,7 +179,7 @@ class ProfileHeaderView: UIView {
         self.setupStatusLabelLayout()
         // настройка компонента для ввода статуса
         self.addSubview(statusTextField)
-        self.setupStatusTextFiled()
+        self.setupStatusTextFiledLayout()
 
         // обновляем макет
         self.layoutIfNeeded()

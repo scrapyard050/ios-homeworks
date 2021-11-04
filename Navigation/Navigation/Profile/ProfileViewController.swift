@@ -16,12 +16,41 @@ protocol ProfileViewControllerDelegate: AnyObject {
 
 class ProfileViewController: UIViewController, UINavigationBarDelegate {
    
-    var profile: ProfileHeaderView?
+    private var profile: ProfileHeaderView?
     
     // для простоты сделаем пустую переменную
     private lazy var statusText: String = {
         return ""
     }()
+    
+    /// @todo макетов нет поэтому создаем свою кнопку
+    ///
+    private lazy var testButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("TEST", for: .normal)
+        button.backgroundColor = UIColor.systemYellow
+        button.tintColor = UIColor.white
+        button.layer.cornerRadius = 4
+        button.layer.opacity = 0.8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tapTestButton), for: .touchUpInside)
+        return button
+    }()
+    
+    /// @brief Обработчик нажатия кнопки
+    /// Выодим лог в консоль
+    ///
+    @objc func tapTestButton() {
+        NSLog("Test button is tapped")
+    }
+    
+    /// @Настройка констрейнтов для отображения кнопки
+    ///
+    func setupTestButtonLayout() {
+        self.testButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        self.testButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+        self.testButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    }
     
     /// @brief Создаем стандарный навигейшен бар с заголовком
     func createNavigationBar() {
@@ -32,6 +61,18 @@ class ProfileViewController: UIViewController, UINavigationBarDelegate {
     }
     
   
+    func setupProfileViewLayout() {
+        guard let profile = self.profile else { return }
+        // относительно заданного фрэйма будут выстраиваться компоненты заданные на profileView
+        profile.frame = self.view.frame
+        profile.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        profile.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+        let constraint = profile.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+        constraint.priority = UILayoutPriority(999)
+        constraint.isActive = true
+        profile.frame.size.height = 220
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.createNavigationBar()
@@ -39,12 +80,12 @@ class ProfileViewController: UIViewController, UINavigationBarDelegate {
         self.profile = ProfileHeaderView(frame: .zero, withDelegate: self)
         guard let profile = self.profile else { return }
         self.view.addSubview(profile)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        guard let profile = self.profile else { return }
-        profile.frame = self.view.frame
+        setupProfileViewLayout()
         profile.addItems()
+        // @todo по поводу пунктра 3 непонятно где создавать новую кнопку
+        // поэтому сделал ее в котроллере
+        self.view.addSubview(testButton)
+        self.setupTestButtonLayout()
     }
 
 }
