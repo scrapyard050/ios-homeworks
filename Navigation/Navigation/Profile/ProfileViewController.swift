@@ -8,12 +8,20 @@
 import UIKit
 
 protocol ProfileViewControllerDelegate: AnyObject {
-    func tapButton()
+    // обработка события нажатия кнопки и выставление статуса
+    func tapButton(handler:(_ status: String) ->Void)
+    // обработка события ввода текста в компонент textField
+    func editingText(text: Character )
 }
 
 class ProfileViewController: UIViewController, UINavigationBarDelegate {
    
     var profile: ProfileHeaderView?
+    
+    // для простоты сделаем пустую переменную
+    private lazy var statusText: String = {
+        return ""
+    }()
     
     /// @brief Создаем стандарный навигейшен бар с заголовком
     func createNavigationBar() {
@@ -23,6 +31,7 @@ class ProfileViewController: UIViewController, UINavigationBarDelegate {
         self.view.addSubview(bar)
     }
     
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         self.createNavigationBar()
@@ -41,7 +50,14 @@ class ProfileViewController: UIViewController, UINavigationBarDelegate {
 }
 
 extension ProfileViewController: ProfileViewControllerDelegate {
-    func tapButton() {
+    func tapButton(handler:(_ status: String) ->Void) {
         NSLog("Button is tapped")
+        handler(self.statusText)
+        self.statusText = ""
     }
+    
+    func editingText(text: Character ){
+        self.statusText += String(text)
+    }
+    
 }

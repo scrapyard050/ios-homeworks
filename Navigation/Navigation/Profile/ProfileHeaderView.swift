@@ -78,12 +78,25 @@ class ProfileHeaderView: UIView {
     ///
     func setupStatusLabelLayout() {
         statusLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: self.frame.width/2).isActive = true
+        statusLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         statusLabel.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -34).isActive = true
+        
     }
     
     /// @brief Передадим обработку нажатия кнопки в контроллер 
     @objc func buttonPressed() {
-        self.delegate?.tapButton()
+        guard let text = self.statusTextField.text else {
+            return
+        }
+        
+        if text.isEmpty {
+            return
+        }
+        
+        self.delegate?.tapButton{
+            self.statusLabel.text = $0
+            self.statusTextField.text = ""
+        }
     }
     
     /// @brief  Получение статуса
@@ -113,7 +126,42 @@ class ProfileHeaderView: UIView {
         statusButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         statusButton.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 16).isActive = true
     }
-        
+    
+    /// @brief Обработчик ввода текста в компонент uitextfield
+    /// Обработку текста передаем в контроллер через делегат
+    ///
+    @objc func statusTextChanged(_ textField: UITextField) {
+        // поскольку пользователь начал вводить текст, считаем что данные уже есть
+        // поэтому делаем небезопасное извлечение данных
+        self.delegate?.editingText(text: (textField.text?.last!)!)
+    }
+    
+    /// @brief Задание констрейнтов для настройки отображения компонента uitextfiled
+    /// Поскольку на макетах нет значений отступов, то задем свои констрейнты
+    ///
+    func setupStatusTextFiled() {
+        statusTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: self.frame.width/2).isActive = true
+        statusTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        statusTextField.bottomAnchor.constraint(equalTo: self.statusButton.topAnchor, constant: -5).isActive = true
+    }
+    
+    /// @brief  Задание статуса
+    private(set) lazy var statusTextField: UITextField = {
+        let statusTextField = UITextField()
+        statusTextField.backgroundColor = UIColor.white
+        statusTextField.placeholder = "Input status"
+        statusTextField.layer.cornerRadius = 12
+        statusTextField.layer.borderColor = UIColor.black.cgColor
+        statusTextField.layer.borderWidth = 1
+        statusTextField.frame.size.width = defaultWidth
+        statusTextField.frame.size.height = 40
+        statusTextField.textColor = UIColor.black
+        statusTextField.translatesAutoresizingMaskIntoConstraints = false
+        statusTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        return statusTextField
+    }()
+    
     /// @todo возможно имеет смысл перенести в конструктор, но могут полететь констрейнты
     /// 
     func addItems() {
@@ -129,6 +177,10 @@ class ProfileHeaderView: UIView {
         // добавляем метку ожидания получения статуса
         self.addSubview(statusLabel)
         self.setupStatusLabelLayout()
+        // настройка компонента для ввода статуса
+        self.addSubview(statusTextField)
+        self.setupStatusTextFiled()
+
         // обновляем макет
         self.layoutIfNeeded()
     }
