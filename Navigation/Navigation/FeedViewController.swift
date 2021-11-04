@@ -16,18 +16,40 @@ class FeedViewController: UIViewController {
         self.navigationController?.pushViewController(postVC, animated: true)
     }
     
+    
+    private(set) lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 10
+        stackView.layer.borderColor = UIColor.black.cgColor
+        stackView.layer.borderWidth = 1
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     func setupPostButton () {
         // создаем кнопку
-        let postButton = UIButton(frame: CGRect(x: 20, y: 20, width: 100, height: 60))
+        let postButton1 = UIButton()
         // выставляем заголовки и цвет
-        postButton.setTitle("Post", for: .normal)
-        postButton.backgroundColor = UIColor.blue
+        postButton1.setTitle("Post", for: .normal)
+        postButton1.backgroundColor = UIColor.blue
         // добавляем обработку события нажатия на клавишу
-        postButton.addTarget(self, action: #selector(self.tappedButton), for: .touchUpInside)
-        // в условии задачи не сказало как располагать кнопку
-        // поэтому поставил компонент по середине, чтобы не перегружать код констрейнтами и анчорами код
-        postButton.center = self.view.center
-        self.view.addSubview(postButton)
+        postButton1.addTarget(self, action: #selector(self.tappedButton), for: .touchUpInside)
+        
+        let postButton2 = UIButton()
+        postButton2.setTitle("Post", for: .normal)
+        postButton2.backgroundColor = UIColor.blue
+        // добавляем обработку события нажатия на клавишу
+        postButton2.addTarget(self, action: #selector(self.tappedButton), for: .touchUpInside)
+        
+        stackView.addArrangedSubview(postButton1)
+        stackView.addArrangedSubview(postButton2)
+        self.view.addSubview(stackView)
+        
+        // настраиваем констрейнты для отображения stackView по центру по центру
+        stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     }
     override func viewDidLoad() {
         super.viewDidLoad()
