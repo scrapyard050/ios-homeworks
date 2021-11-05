@@ -21,8 +21,7 @@ class LoginViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.contentView.backgroundColor = UIColor.systemGray
-        
+        self.contentView.backgroundColor = UIColor.lightGray
         self.contentView.addSubview(loginTextFiled)
         loginTextFiled.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
         loginTextFiled.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5).isActive = true

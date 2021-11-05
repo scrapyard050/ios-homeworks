@@ -22,7 +22,7 @@ class PasswordViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.contentView.backgroundColor = UIColor.systemGray
+        self.contentView.backgroundColor = UIColor.lightGray
         self.contentView.addSubview(passwordTextField)
         passwordTextField.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
         passwordTextField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5).isActive = true
