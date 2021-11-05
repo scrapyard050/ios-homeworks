@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let feed = UINavigationController(rootViewController: FeedViewController())
         feed.tabBarItem = UITabBarItem(title: "FEED", image: UIImage(named: "feed"), selectedImage: nil)
         
-        let profile = UINavigationController(rootViewController: ProfileViewController())
+        let profile = UINavigationController(rootViewController: LogInViewController())
         profile.tabBarItem = UITabBarItem(title: "PROFILE", image: UIImage(named: "profile"), selectedImage: nil)
         
         let tab = UITabBarController()
