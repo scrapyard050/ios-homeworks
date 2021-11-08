@@ -7,10 +7,13 @@
 
 import UIKit
 
+/// @brief ячейка для ввода пароя
+///
 class PasswordViewCell: UITableViewCell {
 
+    /// @todo не задавал обработчики ввода данных в компонент, поскольку нет соответствующего условия в задаче
     private(set) lazy var passwordTextField: UITextField = {
-        let password = UITextField()
+        let password = UITextField.init(frame: .zero)
         password.placeholder = "Password"
         password.textColor = UIColor.black
         password.translatesAutoresizingMaskIntoConstraints = false
@@ -20,6 +23,8 @@ class PasswordViewCell: UITableViewCell {
         return password
     }()
     
+    /// @brief В конструкторе задачем textfiled в ячейку и добавляем констрейнты
+    ///
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.contentView.backgroundColor = UIColor.lightGray
@@ -29,25 +34,11 @@ class PasswordViewCell: UITableViewCell {
         passwordTextField.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
     }
     
-    override func prepareForReuse() {
-        self.accessoryType = .none
-    }
     
     required init?(coder: NSCoder) {
         fatalError("Don't use it")
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
 
 
