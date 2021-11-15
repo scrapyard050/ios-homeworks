@@ -11,10 +11,7 @@ import UIKit
 ///
 class LogInViewController: UIViewController {
     
-    fileprivate let countRow  = 2
-    fileprivate let loginCellId = "LoginViewCellReusable"
-    fileprivate let passwdCellId = "PasswordViewCellReusable"
-    
+
     //  логотип сервиса куда выполняется подключение
     private lazy var logo: UIImageView = {
         let logo = UIImageView()
@@ -30,28 +27,58 @@ class LogInViewController: UIViewController {
         logo.heightAnchor.constraint(equalToConstant: 100).isActive = true
         logo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         logo.topAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 120).isActive = true
+        logo.bottomAnchor.constraint(lessThanOrEqualTo: self.stackView.safeAreaLayoutGuide.topAnchor, constant: -120).isActive = true
     }
     
     
-    // таблица для ввода реквизитов доступа
-    fileprivate lazy var tableView: UITableView = {
-        let table = UITableView.init(frame: .zero, style: .plain)
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.layer.borderColor = UIColor.lightGray.cgColor
-        table.layer.borderWidth = 5
-        table.layer.cornerRadius = 10
-        return table
+    /// @todo не задавал обработчики ввода данных в компонент, поскольку нет соответствующего условия в задаче
+    private lazy var loginTextFiled: UITextField = {
+        let login = UITextField.init(frame: .zero)
+        login.placeholder = "Email of phone"
+        login.textColor = UIColor.black
+        login.font = UIFont.systemFont(ofSize: 16)
+        login.autocapitalizationType = .none
+        return login
     }()
+    
+    /// @todo не задавал обработчики ввода данных в компонент, поскольку нет соответствующего условия в задаче
+    private lazy var passwordTextField: UITextField = {
+        let password = UITextField.init(frame: .zero)
+        password.placeholder = "Password"
+        password.textColor = UIColor.black
+        password.font = UIFont.systemFont(ofSize: 16)
+        password.autocapitalizationType = .none
+        password.isSecureTextEntry = true
+        return password
+    }()
+    
+    
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.spacing = 10
+        stackView.layer.borderColor = UIColor.lightGray.cgColor
+        stackView.layer.borderWidth = 0.5
+        stackView.layer.cornerRadius = 10
+        stackView.backgroundColor = UIColor.lightGray
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        // добавляем отступ для ввода данные
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.distribution = .equalSpacing
+        return stackView
+    }()
+    
     
     /// @brief  настройка констрейнтов таблицы
     ///
-    func setupTableViewLayout() {
-        tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: self.logButton.topAnchor, constant: -16).isActive = true
-        tableView.topAnchor.constraint(lessThanOrEqualTo: self.logo.bottomAnchor, constant: 120).isActive = true
-        /// @todo поскольку стандартная  высота ячейки равна 44 и таблица состоит из двух полей то поставил значение 88
-        tableView.heightAnchor.constraint(equalToConstant: 88).isActive = true
+    func setupStackViewLayout() {
+        self.stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        self.stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        self.stackView.bottomAnchor.constraint(equalTo: self.logButton.topAnchor, constant: -16).isActive = true
+        self.stackView.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
     
     /// @brief обработчик нажатия кнопки логина
@@ -77,10 +104,9 @@ class LogInViewController: UIViewController {
     func setupLogButtonLayout(keyboardHeight: CGFloat) {
         logButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         logButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        logButton.topAnchor.constraint(equalTo: self.tableView.bottomAnchor, constant: 16).isActive = true
+        logButton.topAnchor.constraint(equalTo: self.stackView.bottomAnchor, constant: 16).isActive = true
         logButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         logButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
-       
     }
     
     /// @brief Задание кастомного цвета
@@ -104,73 +130,50 @@ class LogInViewController: UIViewController {
         let keyBoardHeightConstraint = notification.name == UIResponder.keyboardWillShowNotification ? -keyboardFrame!.height : 0
         UIView.animate(withDuration: 0.5, animations: { () -> Void in
             self.setupLogoLayout()
-            self.setupTableViewLayout()
+            self.setupStackViewLayout()
             self.setupLogButtonLayout(keyboardHeight: keyBoardHeightConstraint)
             self.view.layoutIfNeeded()
         })
-
-
    }
     
+
     /// @todo в соответствии с условием задачи код по работе с компонентами не выносил в отдельные классы
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
         // выстраиваем иерархию компонентов
         self.view.addSubview(logo)
-        self.view.addSubview(tableView)
+        
+        self.stackView.addArrangedSubview(loginTextFiled)
+        //self.stackView.addArrangedSubview(spacerView)
+        self.stackView.addArrangedSubview(passwordTextField)
+        
+        self.view.addSubview(stackView)
         self.view.addSubview(logButton)
         self.view.backgroundColor = UIColor.white
         
+        self.stackView.separator(color : .systemGray)
         
         // выполняем настройку autolayout
         self.setupLogoLayout()
-        self.setupTableViewLayout()
+        self.setupStackViewLayout()
         self.setupLogButtonLayout(keyboardHeight: 0)
-        
-        // регистрируем ячейки с которыми будет работать с таблица
-        self.tableView.register(LoginViewCell.self, forCellReuseIdentifier: loginCellId)
-        self.tableView.register(PasswordViewCell.self, forCellReuseIdentifier: passwdCellId)
-        self.tableView.isScrollEnabled = false
-        
-        // пока что выставляем стандартную высоту ячейки
-        // при использовании uitableviewautomaticdimension выводятся ворнинги
-        // возможно нужно вернуть значение uitableviewautomaticdimension через метод делегата
-        self.tableView.rowHeight = 44
-        // связываем таблицу с методами протокола UITableViewDataSource
-        self.tableView.dataSource = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
     
-    
     }
-
-    
     
 }
 
-/// @brief работа с методами протокола UITableViewDataSource
-extension LogInViewController: UITableViewDataSource {
-    
-    /// @brief возвращает количество ячеек
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return countRow
-    }
-    
-    /// @brief возвращает ячейку
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(indexPath.row == 0) {
-            guard let login = tableView.dequeueReusableCell(withIdentifier: loginCellId, for: indexPath) as? LoginViewCell else {
-                fatalError("Login cell not found")
-            }
-            return login
-        }
-        guard let password = tableView.dequeueReusableCell(withIdentifier: passwdCellId, for: indexPath) as? PasswordViewCell else {
-            fatalError("Password cell not found")
-        }
-        return password
-        
+ 
+/// @todo создаем разделить между поля ввода логина/пароля
+extension UIStackView {
+    func separator(color: UIColor) {
+        let divider = UIView()
+        divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        divider.backgroundColor = color
+        // вставляем в позицию 1, то есть после поля для ввода логина, которое имеет индекс 0
+        insertArrangedSubview(divider, at: 1)
+        divider.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -20).isActive = true
     }
 }
-    
-
