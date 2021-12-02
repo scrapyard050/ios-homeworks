@@ -9,7 +9,7 @@ import UIKit
 
 /// @brief Аутентификация пользователя
 ///
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController  {
     
 
     //  логотип сервиса куда выполняется подключение
@@ -27,7 +27,7 @@ class LogInViewController: UIViewController {
         logo.heightAnchor.constraint(equalToConstant: 100).isActive = true
         logo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         logo.topAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 120).isActive = true
-        logo.bottomAnchor.constraint(lessThanOrEqualTo: self.stackView.safeAreaLayoutGuide.topAnchor, constant: -120).isActive = true
+        logo.bottomAnchor.constraint(lessThanOrEqualTo: self.containerView.safeAreaLayoutGuide.topAnchor, constant: -120).isActive = true
     }
     
     
@@ -38,6 +38,8 @@ class LogInViewController: UIViewController {
         login.textColor = UIColor.black
         login.font = UIFont.systemFont(ofSize: 16)
         login.autocapitalizationType = .none
+        login.backgroundColor = .clear
+        login.translatesAutoresizingMaskIntoConstraints = false
         return login
     }()
     
@@ -49,41 +51,37 @@ class LogInViewController: UIViewController {
         password.font = UIFont.systemFont(ofSize: 16)
         password.autocapitalizationType = .none
         password.isSecureTextEntry = true
+        password.backgroundColor = .clear
+        password.translatesAutoresizingMaskIntoConstraints = false
         return password
     }()
     
     
 
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.spacing = 10
-        stackView.layer.borderColor = UIColor.lightGray.cgColor
-        stackView.layer.borderWidth = 0.5
-        stackView.layer.cornerRadius = 10
-        stackView.backgroundColor = UIColor.lightGray
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        // добавляем отступ для ввода данные
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.distribution = .equalSpacing
-        return stackView
+    private lazy var containerView: UIView = {
+        let containerView = UIView()
+        containerView.layer.borderColor = UIColor.lightGray.cgColor
+        containerView.layer.borderWidth = 0.5
+        containerView.layer.cornerRadius = 10
+        containerView.backgroundColor = UIColor.lightGray
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        return containerView
     }()
     
     
     /// @brief  настройка констрейнтов таблицы
     ///
-    func setupStackViewLayout() {
-        self.stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        self.stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        self.stackView.bottomAnchor.constraint(equalTo: self.logButton.topAnchor, constant: -16).isActive = true
-        self.stackView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+    func setupContainerViewLayout() {
+        self.containerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        self.containerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        self.containerView.bottomAnchor.constraint(equalTo: self.logButton.topAnchor, constant: -16).isActive = true
+        self.containerView.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
     
     /// @brief обработчик нажатия кнопки логина
     ///
     @objc func tapLoginButton(sender: UIButton) {
+        self.view.endEditing(true)
         self.navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
     
@@ -104,7 +102,7 @@ class LogInViewController: UIViewController {
     func setupLogButtonLayout(keyboardHeight: CGFloat) {
         logButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         logButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        logButton.topAnchor.constraint(equalTo: self.stackView.bottomAnchor, constant: 16).isActive = true
+        logButton.topAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: 16).isActive = true
         logButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         logButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
     }
@@ -130,13 +128,12 @@ class LogInViewController: UIViewController {
         let keyBoardHeightConstraint = notification.name == UIResponder.keyboardWillShowNotification ? -keyboardFrame!.height : 0
         UIView.animate(withDuration: 0.5, animations: { () -> Void in
             self.setupLogoLayout()
-            self.setupStackViewLayout()
+            self.setupContainerViewLayout()
             self.setupLogButtonLayout(keyboardHeight: keyBoardHeightConstraint)
             self.view.layoutIfNeeded()
         })
    }
     
-
     /// @todo в соответствии с условием задачи код по работе с компонентами не выносил в отдельные классы
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,36 +141,46 @@ class LogInViewController: UIViewController {
         // выстраиваем иерархию компонентов
         self.view.addSubview(logo)
         
-        self.stackView.addArrangedSubview(loginTextFiled)
-        //self.stackView.addArrangedSubview(spacerView)
-        self.stackView.addArrangedSubview(passwordTextField)
-        
-        self.view.addSubview(stackView)
+        self.view.addSubview(containerView)
         self.view.addSubview(logButton)
         self.view.backgroundColor = UIColor.white
         
-        self.stackView.separator(color : .systemGray)
+        //self.stackView.separator(color : .systemGray)
         
         // выполняем настройку autolayout
         self.setupLogoLayout()
-        self.setupStackViewLayout()
+        self.setupContainerViewLayout()
+        
+        
+        self.containerView.addSubview(loginTextFiled)
+        self.loginTextFiled.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5).isActive = true
+        self.loginTextFiled.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        self.loginTextFiled.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        self.loginTextFiled.heightAnchor.constraint(equalToConstant: 49.25).isActive = true
+        
+        
+        let divider = UIView()
+        containerView.addSubview(divider)
+        divider.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        divider.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5).isActive = true
+        divider.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        divider.topAnchor.constraint(equalTo: loginTextFiled.bottomAnchor).isActive = true
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = .systemGray
+    
+        
+        self.containerView.addSubview(passwordTextField)
+        self.passwordTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        self.passwordTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        self.passwordTextField.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 1).isActive = true
+        self.passwordTextField.heightAnchor.constraint(equalToConstant: 49.25).isActive = true
+        
+        
         self.setupLogButtonLayout(keyboardHeight: 0)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
     
     }
-    
 }
 
- 
-/// @todo создаем разделить между поля ввода логина/пароля
-extension UIStackView {
-    func separator(color: UIColor) {
-        let divider = UIView()
-        divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        divider.backgroundColor = color
-        // вставляем в позицию 1, то есть после поля для ввода логина, которое имеет индекс 0
-        insertArrangedSubview(divider, at: 1)
-        divider.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -20).isActive = true
-    }
-}
+
