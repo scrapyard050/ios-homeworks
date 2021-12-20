@@ -89,9 +89,10 @@ class LogInViewController: UIViewController  {
     private(set) lazy var logButton: UIButton = {
         let logButton = UIButton()
         logButton.setTitle("Log in", for: .normal)
-        logButton.backgroundColor = self.colorFromRGB(rgbValue: 0x4885CC)
         logButton.tintColor = UIColor.white
+        logButton.setBackgroundImage(UIImage(named: "blue_pixel"), for: .normal)
         logButton.layer.cornerRadius = 10
+        logButton.clipsToBounds = true
         logButton.translatesAutoresizingMaskIntoConstraints = false
         logButton.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
         return logButton
@@ -104,19 +105,11 @@ class LogInViewController: UIViewController  {
         logButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         logButton.topAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: 16).isActive = true
         logButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        logButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
+        if( 0 != keyboardHeight) {
+            logButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
+        }
     }
     
-    /// @brief Задание кастомного цвета
-    ///
-    func colorFromRGB(rgbValue: UInt) -> UIColor {
-        return UIColor(
-            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
-    }
     
     @objc func handleKeyboardNotification(_ notification: Notification) {
 
