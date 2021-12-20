@@ -63,7 +63,7 @@ class LogInViewController: UIViewController  {
         containerView.layer.borderColor = UIColor.lightGray.cgColor
         containerView.layer.borderWidth = 0.5
         containerView.layer.cornerRadius = 10
-        containerView.backgroundColor = UIColor.lightGray
+        containerView.backgroundColor = UIColor.systemGray6
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
     }()
@@ -145,7 +145,6 @@ class LogInViewController: UIViewController  {
         self.view.addSubview(logButton)
         self.view.backgroundColor = UIColor.white
         
-        //self.stackView.separator(color : .systemGray)
         
         // выполняем настройку autolayout
         self.setupLogoLayout()
