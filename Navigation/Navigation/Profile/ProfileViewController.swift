@@ -16,78 +16,37 @@ protocol ProfileViewControllerDelegate: AnyObject {
 
 class ProfileViewController: UIViewController, UINavigationBarDelegate {
    
-    private var profile: ProfileHeaderView?
+    private let profile = ProfileHeaderView()
     
     // для простоты сделаем пустую переменную
     private lazy var statusText: String = {
         return ""
     }()
     
-    /// @todo макетов нет поэтому создаем свою кнопку
-    ///
-    private lazy var testButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("TEST", for: .normal)
-        button.backgroundColor = UIColor.systemYellow
-        button.tintColor = UIColor.white
-        button.layer.cornerRadius = 4
-        button.layer.opacity = 0.8
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(tapTestButton), for: .touchUpInside)
-        return button
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        // регистрируем ячейку и выставляем себя на получение событий от tableView
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.tableViewCellId)
+        tableView.dataSource = self
+        tableView.delegate = self
+        return tableView
     }()
-    
-    /// @brief Обработчик нажатия кнопки
-    /// Выодим лог в консоль
-    ///
-    @objc func tapTestButton() {
-        NSLog("Test button is tapped")
-    }
-    
-    /// @Настройка констрейнтов для отображения кнопки
-    ///
-    func setupTestButtonLayout() {
-        self.testButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
-        self.testButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-        self.testButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-    }
-    
-    /// @brief Создаем стандарный навигейшен бар с заголовком
-    func createNavigationBar() {
-        let bar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50));
-        let barItem = UINavigationItem(title: "Profile")
-        bar.setItems([barItem], animated: false)
-        self.view.addSubview(bar)
-    }
-    
-  
-    func setupProfileViewLayout() {
-        guard let profile = self.profile else { return }
-        // относительно заданного фрэйма будут выстраиваться компоненты заданные на profileView
-        profile.frame = self.view.frame
-        profile.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
-        profile.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-        let constraint = profile.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
-        constraint.priority = UILayoutPriority(999)
-        constraint.isActive = true
-        profile.frame.size.height = 220
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.createNavigationBar()
-        self.view.backgroundColor = .lightGray
-        self.profile = ProfileHeaderView(frame: .zero, withDelegate: self)
-        guard let profile = self.profile else { return }
-        self.view.addSubview(profile)
-        setupProfileViewLayout()
-        profile.addItems()
-        // @todo по поводу пунктра 3 непонятно где создавать новую кнопку
-        // поэтому сделал ее в котроллере
-        self.view.addSubview(testButton)
-        self.setupTestButtonLayout()
+        self.view.addSubview(self.tableView)
+       
+        [
+            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+        ].forEach{ $0.isActive = true}
+        
+        // получаем события для обработки от ProfileHeaderView
+        self.profile.delegate = self
     }
-
 }
 
 extension ProfileViewController: ProfileViewControllerDelegate {
@@ -99,6 +58,42 @@ extension ProfileViewController: ProfileViewControllerDelegate {
     
     func editingText(text: Character ){
         self.statusText += String(text)
+    }
+    
+}
+
+extension ProfileViewController: UITableViewDataSource {
+    // возвращаем количество столбцов для секции
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // возвращаем посты только для нулевой секции (если я правильно понял условия задачи)
+        guard section == 0 else { return .zero }
+        return ExtendedPost.posts.count
+    }
+    
+    // Получаем ячейку по идентификатору и выполняем ее настройку
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard indexPath.section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.tableViewCellId, for: indexPath ) as? PostTableViewCell else { return UITableViewCell()}
+        
+        cell.setupCell(extendedPost: ExtendedPost.posts[indexPath.row])
+        return cell
+    }
+}
+
+// для нулевой секции задаем профайл в качестве хедара и выставляем расчет высоты на основе содержимого
+extension ProfileViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard indexPath.section == 0 else { return .zero }
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard section == 0 else { return .zero }
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == 0 else { return nil}
+        return profile
     }
     
 }

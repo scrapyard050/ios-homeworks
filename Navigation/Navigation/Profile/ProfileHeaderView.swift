@@ -9,23 +9,20 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     
-    private let defaultWidth: CGFloat = {
-       return 100
+    // стандартный отступ используемый в проекта, возможно стоит вынести в глобальную переменную
+    // поскольку используется в различных экранах
+    private let defaultMargin: CGFloat = {
+       return 16
     }()
     
-    private let defaultHeight: CGFloat = {
-       return 100
-    }()
-    
-    private weak var delegate: ProfileViewControllerDelegate?
+    // делегат для возвращашения введенных данных в контроллер
+    public weak var delegate: ProfileViewControllerDelegate?
     
     /// @brief  image view в рамках, которого размещается аватарка
     ///
     private(set)lazy var avatarImageView: UIImageView = {
         let avatarImageView = UIImageView()
         avatarImageView.image = UIImage(named: "cool_cat")
-        avatarImageView.frame.size.height = defaultHeight
-        avatarImageView.frame.size.width = defaultWidth
         avatarImageView.layer.masksToBounds = true
         avatarImageView.clipsToBounds = true
         avatarImageView.layer.borderColor = UIColor.white.cgColor
@@ -35,15 +32,6 @@ class ProfileHeaderView: UIView {
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
         return avatarImageView
     }()
-    
-    /// @brief Настраиваем констрейнты для отображения аватарки
-    ///
-    func setupAvatarLayout() {
-        avatarImageView.widthAnchor.constraint(equalToConstant: defaultWidth).isActive = true
-        avatarImageView.heightAnchor.constraint(equalToConstant: defaultHeight).isActive = true
-        avatarImageView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        avatarImageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
-    }
     
     /// @brief  Метка с описанием аватарки
     ///
@@ -56,13 +44,6 @@ class ProfileHeaderView: UIView {
         return avatarLabel
     }()
     
-    /// @brief Настраиваем констрейнты для отображения метки с заголовком аватрки
-    ///
-    func setupAvatarLabelLayout() {
-        avatarLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: self.frame.width/2).isActive = true
-        avatarLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 27).isActive = true
-    }
-    
     /// @brief  Метка с описанием ожидания получения статуса
     ///
     private(set)lazy var statusLabel: UILabel = {
@@ -74,17 +55,41 @@ class ProfileHeaderView: UIView {
         return statusLabel
     }()
     
-    /// @brief Настраиваем констрейнты для метки статуса
+    /// @brief  Получение статуса
     ///
-    func setupStatusLabelLayout() {
-        statusLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: self.frame.width/2).isActive = true
-        statusLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        statusLabel.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -34).isActive = true
-        
-    }
+    private(set) lazy var statusButton: UIButton = {
+        let statusButton = UIButton()
+        statusButton.setTitle("Show status", for: .normal)
+        statusButton.backgroundColor = UIColor.systemBlue
+        statusButton.tintColor = UIColor.white
+        statusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
+        statusButton.layer.shadowColor = UIColor.black.cgColor
+        statusButton.layer.shadowRadius = 4
+        statusButton.layer.opacity = 0.7
+        statusButton.layer.cornerRadius = 4
+        statusButton.layer.masksToBounds = false
+        statusButton.translatesAutoresizingMaskIntoConstraints = false
+        statusButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        return statusButton
+    }()
+    
+    /// @brief  Задание статуса
+    private(set) lazy var statusTextField: UITextField = {
+        let statusTextField = UITextField()
+        statusTextField.backgroundColor = UIColor.white
+        statusTextField.placeholder = "Input status"
+        statusTextField.layer.cornerRadius = 12
+        statusTextField.layer.borderColor = UIColor.black.cgColor
+        statusTextField.layer.borderWidth = 1
+        statusTextField.textColor = UIColor.black
+        statusTextField.translatesAutoresizingMaskIntoConstraints = false
+        statusTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        return statusTextField
+    }()
     
     /// @brief Передадим обработку нажатия кнопки в контроллер 
-    @objc func buttonPressed() {
+    @objc private func buttonPressed() {
         guard let text = self.statusTextField.text else {
             return
         }
@@ -99,99 +104,63 @@ class ProfileHeaderView: UIView {
         }
     }
     
-    /// @brief  Получение статуса
-    ///
-    private(set) lazy var statusButton: UIButton = {
-        let statusButton = UIButton()
-        statusButton.setTitle("Show status", for: .normal)
-        statusButton.backgroundColor = UIColor.systemBlue
-        statusButton.tintColor = UIColor.white
-        statusButton.frame.size.height = 50
-        statusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
-        statusButton.layer.shadowColor = UIColor.black.cgColor
-        statusButton.layer.shadowRadius = 4
-        statusButton.layer.opacity = 0.7
-        statusButton.layer.cornerRadius = 4
-        statusButton.layer.masksToBounds = false
-        statusButton.translatesAutoresizingMaskIntoConstraints = false
-        statusButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        return statusButton
-    }()
 
-    /// @brief Настраиваем констрейнты для кнопки получения статуса
-    ///
-    func setupStatusButtonLayout()
-    {
-        statusButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        statusButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        statusButton.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 16).isActive = true
-    }
-    
     /// @brief Обработчик ввода текста в компонент uitextfield
     /// Обработку текста передаем в контроллер через делегат
     ///
-    @objc func statusTextChanged(_ textField: UITextField) {
+    @objc private func statusTextChanged(_ textField: UITextField) {
         // поскольку пользователь начал вводить текст, считаем что данные уже есть
         // поэтому делаем небезопасное извлечение данных
         self.delegate?.editingText(text: (textField.text?.last!)!)
     }
     
-    /// @brief Задание констрейнтов для настройки отображения компонента uitextfiled
-    /// Поскольку на макетах нет значений отступов, то задем свои констрейнты
-    ///
-    func setupStatusTextFiledLayout() {
-        statusTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: self.frame.width/2).isActive = true
-        statusTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        statusTextField.bottomAnchor.constraint(equalTo: self.statusButton.topAnchor, constant: -5).isActive = true
-    }
-    
-    /// @brief  Задание статуса
-    private(set) lazy var statusTextField: UITextField = {
-        let statusTextField = UITextField()
-        statusTextField.backgroundColor = UIColor.white
-        statusTextField.placeholder = "Input status"
-        statusTextField.layer.cornerRadius = 12
-        statusTextField.layer.borderColor = UIColor.black.cgColor
-        statusTextField.layer.borderWidth = 1
-        statusTextField.frame.size.width = defaultWidth
-        statusTextField.frame.size.height = 40
-        statusTextField.textColor = UIColor.black
-        statusTextField.translatesAutoresizingMaskIntoConstraints = false
-        statusTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        return statusTextField
-    }()
-    
-    /// @todo возможно имеет смысл перенести в конструктор, но могут полететь констрейнты
-    /// 
-    func addItems() {
-        // добавляем аватарку и настраиваем констрейнты
-        self.addSubview(avatarImageView)
-        self.setupAvatarLayout()
-        // добавляем метку с описанием аватарки и настраиваем констрейнты
-        self.addSubview(avatarLabel)
-        self.setupAvatarLabelLayout()
-        // добавляем кнопку для получения статуса и настраиваем констрейнты
-        self.addSubview(statusButton)
-        self.setupStatusButtonLayout()
-        // добавляем метку ожидания получения статуса
-        self.addSubview(statusLabel)
-        self.setupStatusLabelLayout()
-        // настройка компонента для ввода статуса
-        self.addSubview(statusTextField)
-        self.setupStatusTextFiledLayout()
-
-        // обновляем макет
-        self.layoutIfNeeded()
-    }
-    
-    init(frame: CGRect, withDelegate: ProfileViewControllerDelegate) {
-        super.init(frame: frame)
-        self.delegate = withDelegate
+   
+    // настройка отображения компонентов на экране
+    private func setupComponents() {
+        self.backgroundColor = .white
+        self.addSubview(self.avatarImageView)
+        self.addSubview(self.avatarLabel)
+        self.addSubview(self.statusLabel)
+        self.addSubview(self.statusTextField)
+        self.addSubview(self.statusButton)
+                
+        [
+            self.avatarImageView.widthAnchor.constraint(equalToConstant: 100),
+            self.avatarImageView.heightAnchor.constraint(equalToConstant: 100),
+            self.avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor,  constant: self.defaultMargin),
+            self.avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: self.defaultMargin),
+            
+            self.avatarLabel.leadingAnchor.constraint(equalTo: self.avatarImageView.trailingAnchor, constant: self.defaultMargin),
+            self.avatarLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
+            self.avatarLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -self.defaultMargin),
+            
+            self.statusLabel.bottomAnchor.constraint(equalTo: self.statusTextField.topAnchor, constant: -5.0),
+            self.statusLabel.leadingAnchor.constraint(equalTo: self.avatarLabel.leadingAnchor),
+            self.statusLabel.trailingAnchor.constraint(equalTo: self.avatarLabel.trailingAnchor),
+            
+            self.statusTextField.bottomAnchor.constraint(equalTo: self.statusButton.topAnchor, constant: -self.defaultMargin),
+            self.statusTextField.leadingAnchor.constraint(equalTo: self.avatarLabel.leadingAnchor),
+            self.statusTextField.trailingAnchor.constraint(equalTo: self.avatarLabel.trailingAnchor),
+            self.statusTextField.heightAnchor.constraint(equalToConstant: 40),
+            
+            self.statusButton.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: self.defaultMargin),
+            self.statusButton.leadingAnchor.constraint(equalTo: self.avatarImageView.leadingAnchor),
+            self.statusButton.trailingAnchor.constraint(equalTo: self.avatarLabel.trailingAnchor),
+            self.statusButton.heightAnchor.constraint(equalToConstant: 50),
+            self.statusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -self.defaultMargin)
+        ].forEach{ $0.isActive = true}
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
-
+    
+    // перегруженный конструктор
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupComponents()
+    }
 }
+
+
+
