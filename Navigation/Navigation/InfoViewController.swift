@@ -39,7 +39,7 @@ class InfoViewController: UIViewController {
         alertButton.addTarget(self, action: #selector(self.tappedAlertButton), for: .touchUpInside)
         // так же выравниваем по центру, чтобы не перегружать констрейнтами или анчорами
         alertButton.center = self.view.center
-        self.view.addSubview(alertButton)
+        self.view.addSubviews(alertButton)
     }
     
     override func viewDidLoad() {

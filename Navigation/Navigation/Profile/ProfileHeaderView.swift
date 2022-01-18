@@ -8,13 +8,7 @@
 import UIKit
 
 class ProfileHeaderView: UIView {
-    
-    // стандартный отступ используемый в проекта, возможно стоит вынести в глобальную переменную
-    // поскольку используется в различных экранах
-    private let defaultMargin: CGFloat = {
-       return 16
-    }()
-    
+
     // делегат для возвращашения введенных данных в контроллер
     public weak var delegate: ProfileViewControllerDelegate?
     
@@ -29,7 +23,7 @@ class ProfileHeaderView: UIView {
         avatarImageView.layer.borderWidth = 3
         avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
         avatarImageView.contentMode = UIView.ContentMode.scaleAspectFit
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        avatarImageView.toAutoLayout()
         return avatarImageView
     }()
     
@@ -40,7 +34,7 @@ class ProfileHeaderView: UIView {
         avatarLabel.font = UIFont.boldSystemFont(ofSize: 18)
         avatarLabel.textColor = UIColor.black
         avatarLabel.text = "Hipster Cat"
-        avatarLabel.translatesAutoresizingMaskIntoConstraints = false
+        avatarLabel.toAutoLayout()
         return avatarLabel
     }()
     
@@ -51,7 +45,7 @@ class ProfileHeaderView: UIView {
         statusLabel.font = UIFont.boldSystemFont(ofSize: 14)
         statusLabel.textColor = UIColor.gray
         statusLabel.text = "Waiting for something..."
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        statusLabel.toAutoLayout()
         return statusLabel
     }()
     
@@ -68,7 +62,7 @@ class ProfileHeaderView: UIView {
         statusButton.layer.opacity = 0.7
         statusButton.layer.cornerRadius = 4
         statusButton.layer.masksToBounds = false
-        statusButton.translatesAutoresizingMaskIntoConstraints = false
+        statusButton.toAutoLayout()
         statusButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         return statusButton
     }()
@@ -82,7 +76,7 @@ class ProfileHeaderView: UIView {
         statusTextField.layer.borderColor = UIColor.black.cgColor
         statusTextField.layer.borderWidth = 1
         statusTextField.textColor = UIColor.black
-        statusTextField.translatesAutoresizingMaskIntoConstraints = false
+        statusTextField.toAutoLayout()
         statusTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         return statusTextField
@@ -116,39 +110,41 @@ class ProfileHeaderView: UIView {
     
    
     // настройка отображения компонентов на экране
-    private func setupComponents() {
+    private func prepareUI() {
         self.backgroundColor = .white
-        self.addSubview(self.avatarImageView)
-        self.addSubview(self.avatarLabel)
-        self.addSubview(self.statusLabel)
-        self.addSubview(self.statusTextField)
-        self.addSubview(self.statusButton)
-                
+        self.addSubviews(self.avatarImageView,
+                         self.avatarLabel,
+                         self.statusLabel,
+                         self.statusTextField,
+                         self.statusButton)
+    
+        let constraints =
         [
-            self.avatarImageView.widthAnchor.constraint(equalToConstant: 100),
-            self.avatarImageView.heightAnchor.constraint(equalToConstant: 100),
-            self.avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor,  constant: self.defaultMargin),
-            self.avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: self.defaultMargin),
+            self.avatarImageView.widthAnchor.constraint(equalToConstant: Constants.avatarImageSize),
+            self.avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarImageSize),
+            self.avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor,  constant: Constants.defaultMargin),
+            self.avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.defaultMargin),
             
-            self.avatarLabel.leadingAnchor.constraint(equalTo: self.avatarImageView.trailingAnchor, constant: self.defaultMargin),
-            self.avatarLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
-            self.avatarLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -self.defaultMargin),
+            self.avatarLabel.leadingAnchor.constraint(equalTo: self.avatarImageView.trailingAnchor, constant: Constants.defaultMargin),
+            self.avatarLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.avatarLabelTopMargin),
+            self.avatarLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.defaultMargin),
             
-            self.statusLabel.bottomAnchor.constraint(equalTo: self.statusTextField.topAnchor, constant: -5.0),
+            self.statusLabel.bottomAnchor.constraint(equalTo: self.statusTextField.topAnchor, constant: -Constants.avatarLabelBottomMargin),
             self.statusLabel.leadingAnchor.constraint(equalTo: self.avatarLabel.leadingAnchor),
             self.statusLabel.trailingAnchor.constraint(equalTo: self.avatarLabel.trailingAnchor),
             
-            self.statusTextField.bottomAnchor.constraint(equalTo: self.statusButton.topAnchor, constant: -self.defaultMargin),
+            self.statusTextField.bottomAnchor.constraint(equalTo: self.statusButton.topAnchor, constant: -Constants.defaultMargin),
             self.statusTextField.leadingAnchor.constraint(equalTo: self.avatarLabel.leadingAnchor),
             self.statusTextField.trailingAnchor.constraint(equalTo: self.avatarLabel.trailingAnchor),
-            self.statusTextField.heightAnchor.constraint(equalToConstant: 40),
+            self.statusTextField.heightAnchor.constraint(equalToConstant: Constants.statusTextFieldHeight),
             
-            self.statusButton.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: self.defaultMargin),
+            self.statusButton.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: Constants.defaultMargin),
             self.statusButton.leadingAnchor.constraint(equalTo: self.avatarImageView.leadingAnchor),
             self.statusButton.trailingAnchor.constraint(equalTo: self.avatarLabel.trailingAnchor),
-            self.statusButton.heightAnchor.constraint(equalToConstant: 50),
-            self.statusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -self.defaultMargin)
-        ].forEach{ $0.isActive = true}
+            self.statusButton.heightAnchor.constraint(equalToConstant: Constants.statusButtonHeight),
+            self.statusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.defaultMargin)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     required init?(coder: NSCoder) {
@@ -158,7 +154,7 @@ class ProfileHeaderView: UIView {
     // перегруженный конструктор
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupComponents()
+        self.prepareUI()
     }
 }
 

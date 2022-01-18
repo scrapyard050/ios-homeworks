@@ -8,7 +8,7 @@
 import UIKit
 
 class FeedViewController: UIViewController {
-
+    
     // обработчик нажатия кнопки
     @objc func tappedButton(sender: UIButton ) {
         let postVC = PostViewController(post: Post(title: "Post"))
@@ -24,7 +24,7 @@ class FeedViewController: UIViewController {
         stackView.spacing = 10
         stackView.layer.borderColor = UIColor.black.cgColor
         stackView.layer.borderWidth = 1
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.toAutoLayout()
         return stackView
     }()
     
@@ -45,7 +45,7 @@ class FeedViewController: UIViewController {
         
         stackView.addArrangedSubview(postButton1)
         stackView.addArrangedSubview(postButton2)
-        self.view.addSubview(stackView)
+        self.view.addSubviews(stackView)
         
         // настраиваем констрейнты для отображения stackView по центру по центру
         stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true

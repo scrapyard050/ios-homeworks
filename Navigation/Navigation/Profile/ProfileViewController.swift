@@ -14,7 +14,7 @@ protocol ProfileViewControllerDelegate: AnyObject {
     func editingText(text: Character )
 }
 
-class ProfileViewController: UIViewController, UINavigationBarDelegate {
+class ProfileViewController: UIViewController {
    
     private let profile = ProfileHeaderView()
     
@@ -24,8 +24,8 @@ class ProfileViewController: UIViewController, UINavigationBarDelegate {
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.toAutoLayout()
         // регистрируем ячейку и выставляем себя на получение событий от tableView
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.tableViewCellId)
         tableView.dataSource = self
@@ -33,17 +33,21 @@ class ProfileViewController: UIViewController, UINavigationBarDelegate {
         return tableView
     }()
     
+    func prepareUI() {
+        self.view.addSubviews(self.tableView)
+        let constraints =
+        [
+            self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(self.tableView)
-       
-        [
-            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-        ].forEach{ $0.isActive = true}
-        
+        self.prepareUI()
         // получаем события для обработки от ProfileHeaderView
         self.profile.delegate = self
     }
@@ -97,3 +101,6 @@ extension ProfileViewController: UITableViewDelegate {
     }
     
 }
+
+
+

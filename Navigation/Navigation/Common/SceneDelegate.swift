@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let profile = UINavigationController(rootViewController: LogInViewController())
         profile.tabBarItem = UITabBarItem(title: "PROFILE", image: UIImage(named: "profile"), selectedImage: nil)
-        
+    
         let tab = UITabBarController()
         tab.setViewControllers([feed, profile], animated: true)
         window.rootViewController = tab

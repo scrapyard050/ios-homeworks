@@ -18,6 +18,8 @@
 		1035D207271F7B1300F889D4 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035D206271F7B1300F889D4 /* InfoViewController.swift */; };
 		10806E0C2732F4F7000BD9D8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */; };
 		10AC67F227355C8C0029A696 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AC67F127355C8C0029A696 /* LogInViewController.swift */; };
+		10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */; };
+		10F1FD5127963B9D007AF804 /* Defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD5027963B9D007AF804 /* Defines.swift */; };
 		10F5B486277496C20020A7FC /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F5B485277496C20020A7FC /* PostTableViewCell.swift */; };
 		10F5B48927749F3E0020A7FC /* ExtendedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F5B48827749F3E0020A7FC /* ExtendedPost.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +38,8 @@
 		1035D206271F7B1300F889D4 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		10AC67F127355C8C0029A696 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
+		10F1FD5027963B9D007AF804 /* Defines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defines.swift; sourceTree = "<group>"; };
 		10F5B485277496C20020A7FC /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		10F5B48827749F3E0020A7FC /* ExtendedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedPost.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,9 +74,8 @@
 		101359BF271E28B300B04F8E /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				101359C0271E28B300B04F8E /* AppDelegate.swift */,
+				10F1FD4D27963579007AF804 /* Common */,
 				10806E0F2732F570000BD9D8 /* Profile */,
-				101359C2271E28B300B04F8E /* SceneDelegate.swift */,
 				1035D206271F7B1300F889D4 /* InfoViewController.swift */,
 				101359D4271E2A4300B04F8E /* FeedViewController.swift */,
 				1035D205271F7A1B00F889D4 /* Post */,
@@ -102,6 +105,17 @@
 				10AC67F127355C8C0029A696 /* LogInViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		10F1FD4D27963579007AF804 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				101359C2271E28B300B04F8E /* SceneDelegate.swift */,
+				101359C0271E28B300B04F8E /* AppDelegate.swift */,
+				10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */,
+				10F1FD5027963B9D007AF804 /* Defines.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,12 +190,14 @@
 			files = (
 				1035D202271F6D6300F889D4 /* PostViewController.swift in Sources */,
 				101359C1271E28B300B04F8E /* AppDelegate.swift in Sources */,
+				10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */,
 				10AC67F227355C8C0029A696 /* LogInViewController.swift in Sources */,
 				101359D7271E2A5300B04F8E /* ProfileViewController.swift in Sources */,
 				1035D207271F7B1300F889D4 /* InfoViewController.swift in Sources */,
 				101359D5271E2A4300B04F8E /* FeedViewController.swift in Sources */,
 				1035D204271F774800F889D4 /* Post.swift in Sources */,
 				10F5B486277496C20020A7FC /* PostTableViewCell.swift in Sources */,
+				10F1FD5127963B9D007AF804 /* Defines.swift in Sources */,
 				101359C3271E28B300B04F8E /* SceneDelegate.swift in Sources */,
 				10806E0C2732F4F7000BD9D8 /* ProfileHeaderView.swift in Sources */,
 				10F5B48927749F3E0020A7FC /* ExtendedPost.swift in Sources */,

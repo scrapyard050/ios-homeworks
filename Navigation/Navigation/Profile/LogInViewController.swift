@@ -11,25 +11,13 @@ import UIKit
 ///
 class LogInViewController: UIViewController  {
     
-
     //  логотип сервиса куда выполняется подключение
     private lazy var logo: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "logo")
-        logo.translatesAutoresizingMaskIntoConstraints = false
+        logo.toAutoLayout()
         return logo
     }()
-    
-    /// @brief настройка констрейнтов логотипа
-    ///
-    func setupLogoLayout() {
-        logo.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        logo.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        logo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        logo.topAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 120).isActive = true
-        logo.bottomAnchor.constraint(lessThanOrEqualTo: self.containerView.safeAreaLayoutGuide.topAnchor, constant: -120).isActive = true
-    }
-    
     
     /// @todo не задавал обработчики ввода данных в компонент, поскольку нет соответствующего условия в задаче
     private lazy var loginTextFiled: UITextField = {
@@ -39,7 +27,7 @@ class LogInViewController: UIViewController  {
         login.font = UIFont.systemFont(ofSize: 16)
         login.autocapitalizationType = .none
         login.backgroundColor = .clear
-        login.translatesAutoresizingMaskIntoConstraints = false
+        login.toAutoLayout()
         return login
     }()
     
@@ -52,10 +40,9 @@ class LogInViewController: UIViewController  {
         password.autocapitalizationType = .none
         password.isSecureTextEntry = true
         password.backgroundColor = .clear
-        password.translatesAutoresizingMaskIntoConstraints = false
+        password.toAutoLayout()
         return password
     }()
-    
     
 
     private lazy var containerView: UIView = {
@@ -64,26 +51,9 @@ class LogInViewController: UIViewController  {
         containerView.layer.borderWidth = 0.5
         containerView.layer.cornerRadius = 10
         containerView.backgroundColor = UIColor.systemGray6
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.toAutoLayout()
         return containerView
     }()
-    
-    
-    /// @brief  настройка констрейнтов таблицы
-    ///
-    func setupContainerViewLayout() {
-        self.containerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        self.containerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        self.containerView.bottomAnchor.constraint(equalTo: self.logButton.topAnchor, constant: -16).isActive = true
-        self.containerView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-    }
-    
-    /// @brief обработчик нажатия кнопки логина
-    ///
-    @objc func tapLoginButton(sender: UIButton) {
-        self.view.endEditing(true)
-        self.navigationController?.pushViewController(ProfileViewController(), animated: true)
-    }
     
     // кнопка логина
     private(set) lazy var logButton: UIButton = {
@@ -93,23 +63,24 @@ class LogInViewController: UIViewController  {
         logButton.setBackgroundImage(UIImage(named: "blue_pixel"), for: .normal)
         logButton.layer.cornerRadius = 10
         logButton.clipsToBounds = true
-        logButton.translatesAutoresizingMaskIntoConstraints = false
+        logButton.toAutoLayout()
         logButton.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
         return logButton
     }()
     
-    /// @brief настройка констрейнтов кнопки логина
-    ///
-    func setupLogButtonLayout(keyboardHeight: CGFloat) {
-        logButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        logButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        logButton.topAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: 16).isActive = true
-        logButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        if( 0 != keyboardHeight) {
-            logButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
-        }
-    }
+    private(set) lazy var divider: UIView = {
+        let divider = UIView()
+        divider.backgroundColor = .systemGray
+        divider.toAutoLayout()
+        return divider
+    }()
     
+    /// @brief обработчик нажатия кнопки логина
+    ///
+    @objc func tapLoginButton(sender: UIButton) {
+        self.view.endEditing(true)
+        self.navigationController?.pushViewController(ProfileViewController(), animated: true)
+    }
     
     @objc func handleKeyboardNotification(_ notification: Notification) {
 
@@ -127,51 +98,84 @@ class LogInViewController: UIViewController  {
         })
    }
     
-    /// @todo в соответствии с условием задачи код по работе с компонентами не выносил в отдельные классы
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true
-        // выстраиваем иерархию компонентов
-        self.view.addSubview(logo)
+    /// @brief настройка констрейнтов логотипа
+    ///
+    func setupLogoLayout() {
+        let constraints = [
+            self.logo.widthAnchor.constraint(equalToConstant: Constants.logoSize),
+            self.logo.heightAnchor.constraint(equalToConstant: Constants.logoSize),
+            self.logo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.logo.topAnchor.constraint(lessThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor, constant: Constants.logoTopMargin),
+            self.logo.bottomAnchor.constraint(lessThanOrEqualTo: self.containerView.safeAreaLayoutGuide.topAnchor, constant: -Constants.logoBottomMargin),
+        ]
+        NSLayoutConstraint.activate(constraints)
         
-        self.view.addSubview(containerView)
-        self.view.addSubview(logButton)
+    }
+    
+    /// @brief  настройка констрейнтов таблицы
+    ///
+    func setupContainerViewLayout() {
+        let constraints = [
+            self.containerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.defaultMargin),
+            self.containerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.defaultMargin),
+            self.containerView.bottomAnchor.constraint(equalTo: self.logButton.topAnchor, constant: -Constants.defaultMargin),
+            self.containerView.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    /// @brief настройка констрейнтов кнопки логина
+    ///
+    func setupLogButtonLayout(keyboardHeight: CGFloat) {
+        let constraints = [
+            self.logButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.defaultMargin),
+            self.logButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.defaultMargin),
+            self.logButton.topAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: Constants.defaultMargin),
+            self.logButton.heightAnchor.constraint(equalToConstant: Constants.logButtonHeight)
+        ]
+        NSLayoutConstraint.activate(constraints)
+       
+        if( 0 != keyboardHeight) {
+            self.logButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
+        }
+    }
+    
+    func prepareUI() {
+        self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = UIColor.white
         
+        self.view.addSubviews(self.logo,
+                              self.containerView,
+                              self.logButton)
         
-        // выполняем настройку autolayout
+        self.containerView.addSubviews(self.loginTextFiled,
+                                       self.divider,
+                                       self.passwordTextField)
+        let constraints = [
+            self.loginTextFiled.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor, constant: Constants.loginTextFiledLeftMargin),
+            self.loginTextFiled.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor),
+            self.loginTextFiled.topAnchor.constraint(equalTo: self.containerView.topAnchor),
+            self.loginTextFiled.heightAnchor.constraint(equalToConstant: Constants.inputAuthDataTextFiledHeight),
+            self.divider.heightAnchor.constraint(equalToConstant: Constants.dividerHeight),
+            self.divider.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor, constant: Constants.dividerLeftMargin),
+            self.divider.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor),
+            self.divider.topAnchor.constraint(equalTo: self.loginTextFiled.bottomAnchor),
+            self.passwordTextField.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor),
+            self.passwordTextField.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor),
+            self.passwordTextField.topAnchor.constraint(equalTo: self.divider.bottomAnchor, constant: Constants.passwordTextFieldTopMargin),
+            self.passwordTextField.heightAnchor.constraint(equalToConstant: Constants.inputAuthDataTextFiledHeight)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+        
         self.setupLogoLayout()
         self.setupContainerViewLayout()
-        
-        
-        self.containerView.addSubview(loginTextFiled)
-        self.loginTextFiled.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5).isActive = true
-        self.loginTextFiled.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        self.loginTextFiled.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        self.loginTextFiled.heightAnchor.constraint(equalToConstant: 49.25).isActive = true
-        
-        
-        let divider = UIView()
-        containerView.addSubview(divider)
-        divider.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        divider.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5).isActive = true
-        divider.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        divider.topAnchor.constraint(equalTo: loginTextFiled.bottomAnchor).isActive = true
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = .systemGray
-    
-        
-        self.containerView.addSubview(passwordTextField)
-        self.passwordTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        self.passwordTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        self.passwordTextField.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 1).isActive = true
-        self.passwordTextField.heightAnchor.constraint(equalToConstant: 49.25).isActive = true
-        
-        
         self.setupLogButtonLayout(keyboardHeight: 0)
-        
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.prepareUI()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-    
     }
 }
 
