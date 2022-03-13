@@ -20,6 +20,8 @@
 		10377A4827B934C800856764 /* CurrentUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10377A4727B934C800856764 /* CurrentUserService.swift */; };
 		10624DCB27B94D2B00D25A93 /* TestUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10624DCA27B94D2B00D25A93 /* TestUserService.swift */; };
 		10806E0C2732F4F7000BD9D8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */; };
+		1088794427DE1D9D00A9B0AD /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1088794327DE1D9D00A9B0AD /* CustomButton.swift */; };
+		1088794627DE526200A9B0AD /* TestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1088794527DE526100A9B0AD /* TestModel.swift */; };
 		10AC67F227355C8C0029A696 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AC67F127355C8C0029A696 /* LogInViewController.swift */; };
 		10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */; };
 		10F1FD5127963B9D007AF804 /* Defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD5027963B9D007AF804 /* Defines.swift */; };
@@ -43,6 +45,8 @@
 		10377A4727B934C800856764 /* CurrentUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserService.swift; sourceTree = "<group>"; };
 		10624DCA27B94D2B00D25A93 /* TestUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUserService.swift; sourceTree = "<group>"; };
 		10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		1088794327DE1D9D00A9B0AD /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		1088794527DE526100A9B0AD /* TestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestModel.swift; sourceTree = "<group>"; };
 		10AC67F127355C8C0029A696 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		10F1FD5027963B9D007AF804 /* Defines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defines.swift; sourceTree = "<group>"; };
@@ -131,6 +135,8 @@
 				101359C0271E28B300B04F8E /* AppDelegate.swift */,
 				10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */,
 				10F1FD5027963B9D007AF804 /* Defines.swift */,
+				1088794327DE1D9D00A9B0AD /* CustomButton.swift */,
+				1088794527DE526100A9B0AD /* TestModel.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -208,6 +214,7 @@
 				10624DCB27B94D2B00D25A93 /* TestUserService.swift in Sources */,
 				1035D202271F6D6300F889D4 /* PostViewController.swift in Sources */,
 				101359C1271E28B300B04F8E /* AppDelegate.swift in Sources */,
+				1088794627DE526200A9B0AD /* TestModel.swift in Sources */,
 				10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */,
 				10AC67F227355C8C0029A696 /* LogInViewController.swift in Sources */,
 				101359D7271E2A5300B04F8E /* ProfileViewController.swift in Sources */,
@@ -218,6 +225,7 @@
 				10F5B486277496C20020A7FC /* PostTableViewCell.swift in Sources */,
 				10377A4827B934C800856764 /* CurrentUserService.swift in Sources */,
 				10F1FD5127963B9D007AF804 /* Defines.swift in Sources */,
+				1088794427DE1D9D00A9B0AD /* CustomButton.swift in Sources */,
 				101359C3271E28B300B04F8E /* SceneDelegate.swift in Sources */,
 				10806E0C2732F4F7000BD9D8 /* ProfileHeaderView.swift in Sources */,
 				10F5B48927749F3E0020A7FC /* ExtendedPost.swift in Sources */,
