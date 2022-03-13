@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate: AnyObject {
+    func checker(login: String, passwd: String) -> Bool
+}
+
 /// @brief Аутентификация пользователя
 ///
 class LogInViewController: UIViewController  {
+    
+    var delegate: LoginViewControllerDelegate?
     
     //  логотип сервиса куда выполняется подключение
     private lazy var logo: UIImageView = {
@@ -91,6 +97,19 @@ class LogInViewController: UIViewController  {
                                                                avatar: Constants.infoNotDefined,
                                                                status: Constants.infoNotDefined ))
         
+        guard let passwd = passwordTextField.text else {
+            return
+        }
+        
+        guard let result =  delegate?.checker(login: userName, passwd: passwd) else {
+            return
+        }
+
+        if( !result) {
+            return
+        }
+        
+        // переходим к следующему окну если только прошла проверка введенного логина и пароя
         self.navigationController?.pushViewController(ProfileViewController(userService: currentUserService, userName: userName), animated: true)
     }
     
