@@ -25,4 +25,5 @@ public struct Constants {
     static let avatarLabelTopMargin = 27.0
     static let avatarLabelBottomMargin = 5.0
     static let postImageTopMargin = 12.0
+    static let infoNotDefined = "Not defined"
 }

@@ -79,7 +79,19 @@ class LogInViewController: UIViewController  {
     ///
     @objc func tapLoginButton(sender: UIButton) {
         self.view.endEditing(true)
-        self.navigationController?.pushViewController(ProfileViewController(), animated: true)
+        /// @todo по требованиям задачи нет описания для полей аватар и статус,
+        ///  То есть ннепонятно как они должны передаваться, как доджен создаваться обьект пользователя,  пока что передаем дефайны
+        ///  В условиях задачи ничего не сказано про верификацию имени пользователя
+        ///  Считаем что если хоть какие-то данные введены то используем для создания пользователя
+        guard let userName = loginTextFiled.text else {
+            return
+        }
+        
+        let currentUserService = CurrentUserService(user: User(name: userName,
+                                                               avatar: Constants.infoNotDefined,
+                                                               status: Constants.infoNotDefined ))
+        
+        self.navigationController?.pushViewController(ProfileViewController(userService: currentUserService, userName: userName), animated: true)
     }
     
     @objc func handleKeyboardNotification(_ notification: Notification) {

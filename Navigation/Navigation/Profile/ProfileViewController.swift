@@ -16,6 +16,8 @@ protocol ProfileViewControllerDelegate: AnyObject {
 
 class ProfileViewController: UIViewController {
    
+    var userService: UserService
+    var userName: String
     private let profile = ProfileHeaderView()
     
     // для простоты сделаем пустую переменную
@@ -33,6 +35,20 @@ class ProfileViewController: UIViewController {
         return tableView
     }()
     
+    init(userService: UserService, userName: String) {
+#if DEBUG
+        self.userService = TestUserService()
+#else
+        self.userService = userService
+#endif
+        self.userName = userName
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func prepareUI() {
         self.view.addSubviews(self.tableView)
         let constraints =
@@ -45,10 +61,20 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    func userInfo() {
+        guard let user =  self.userService.user(name: self.userName) else {
+            return
+        }
+        
+        print("User name: \(user.name)")
+        print("User avatar: \(user.avatar)")
+        print("User status: \(user.status)")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.prepareUI()
-        // получаем события для обработки от ProfileHeaderView
+        self.userInfo()
         self.profile.delegate = self
     }
 }
