@@ -15,11 +15,13 @@ protocol ProfileViewControllerDelegate: AnyObject {
 }
 
 class ProfileViewController: UIViewController {
-   
+    // MARK: Public properties
     var userService: UserService
     var userName: String
-    private let profile = ProfileHeaderView()
     
+    // MARK: Private properties
+    private let profile = ProfileHeaderView()
+ 
     // для простоты сделаем пустую переменную
     private lazy var statusText: String = {
         return ""
@@ -35,6 +37,7 @@ class ProfileViewController: UIViewController {
         return tableView
     }()
     
+    // MARK: Constructors
     init(userService: UserService, userName: String) {
 #if DEBUG
         self.userService = TestUserService()
@@ -48,6 +51,17 @@ class ProfileViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    // MARK: Life cycle methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.prepareUI()
+        self.userInfo()
+        self.profile.delegate = self
+    }
+    
+    // MARK: Public methods
     
     func prepareUI() {
         self.view.addSubviews(self.tableView)
@@ -70,15 +84,9 @@ class ProfileViewController: UIViewController {
         print("User avatar: \(user.avatar)")
         print("User status: \(user.status)")
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.prepareUI()
-        self.userInfo()
-        self.profile.delegate = self
-    }
 }
 
+// MARK: Extensions
 extension ProfileViewController: ProfileViewControllerDelegate {
     func tapButton(handler:(_ status: String) ->Void) {
         NSLog("Button is tapped")

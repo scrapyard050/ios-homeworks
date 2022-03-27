@@ -8,7 +8,7 @@
 import Foundation
 class TestModel {
     typealias ComplitaionHandler = (Bool) -> Void
-    let testMessage = "Hello"
+    private let testMessage = "Hello"
     func check(word: String, completionHandler: ComplitaionHandler) {
         if testMessage != word {
             completionHandler(false)

@@ -8,9 +8,12 @@
 import UIKit
 
 class ProfileHeaderView: UIView {
-
+    // MARK: Public properties
+    
     // делегат для возвращашения введенных данных в контроллер
     public weak var delegate: ProfileViewControllerDelegate?
+    
+    // MARK: Private properties
     
     /// @brief  image view в рамках, которого размещается аватарка
     ///
@@ -82,6 +85,18 @@ class ProfileHeaderView: UIView {
         return statusTextField
     }()
     
+    
+    // MARK: Constructors
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.prepareUI()
+    }
+    
+    // MARK: Private methods
     /// @brief Передадим обработку нажатия кнопки в контроллер 
     @objc private func buttonPressed() {
         guard let text = self.statusTextField.text else {
@@ -145,16 +160,6 @@ class ProfileHeaderView: UIView {
             self.statusButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.defaultMargin)
         ]
         NSLayoutConstraint.activate(constraints)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // перегруженный конструктор
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.prepareUI()
     }
 }
 

@@ -9,24 +9,12 @@ import UIKit
 
 class FeedViewController: UIViewController {
     
-    // обработчик нажатия кнопки
-    @objc func tappedButton(sender: UIButton ) {
-        let postVC = PostViewController(post: Post(title: "Post"))
-        NSLog("Go to %@", String(describing: PostViewController.self))
-        self.navigationController?.pushViewController(postVC, animated: true)
-    }
+    // MARK: Public properties
+    weak var coordinator: FeedCoordinator?
     
-    
-  
-    /// поскольку макетов нету встроил компоненты в уже в имеющиюся верстку
-    private(set)lazy var testMessageLabel: UILabel = {
-        let testMessageLabel = UILabel()
-        testMessageLabel.text = "Check Result"
-        testMessageLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        testMessageLabel.textColor = .black
-        testMessageLabel.toAutoLayout()
-        return testMessageLabel
-    }()
+    // MARK: Private properties
+    private let custom = CustomButton(title: "TestMessage", tintColor: UIColor.white);
+    private(set) lazy var textMessageHandler = custom
     
     private lazy var testMessageTextFiled: UITextField = {
         let testMessageTextFiled = UITextField.init(frame: .zero)
@@ -41,11 +29,17 @@ class FeedViewController: UIViewController {
         return testMessageTextFiled
     }()
     
-    let custom = CustomButton(title: "TestMessage", tintColor: UIColor.white);
-    private(set) lazy var textMessageHandler = custom
+    /// поскольку макетов нету встроил компоненты в уже в имеющиюся верстку
+    private(set)lazy var testMessageLabel: UILabel = {
+        let testMessageLabel = UILabel()
+        testMessageLabel.text = "Check Result"
+        testMessageLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        testMessageLabel.textColor = .black
+        testMessageLabel.toAutoLayout()
+        return testMessageLabel
+    }()
     
-    
-    private(set) lazy var stackView: UIStackView = {
+   private(set) lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -56,8 +50,34 @@ class FeedViewController: UIViewController {
         return stackView
     }()
     
+    // MARK: Life cycle methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = UIColor.white
+        self.setupPostButton()
+        custom.onButtonTap = { [weak self] in
+            guard let message = self?.testMessageTextFiled.text else {
+                return
+            }
+            
+            guard !message.isEmpty else {
+                print("Test message is empty")
+                return
+            }
+            
+            let testModel = TestModel()
+            testModel.check(word: message, completionHandler: { succes in
+                if(succes) {
+                    self?.testMessageLabel.backgroundColor = .green
+                    return
+                }
+                self?.testMessageLabel.backgroundColor = .red
+            } )
+        }
+    }
+    
+    // MARK: Public methods
     func setupPostButton () {
-        
         // создаем кнопку
         let postButton1 = UIButton()
         // выставляем заголовки и цвет
@@ -83,28 +103,12 @@ class FeedViewController: UIViewController {
         stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
-        self.setupPostButton()
-        custom.onButtonTap = { [weak self] in
-            guard let message = self?.testMessageTextFiled.text else {
-                return
-            }
-            
-            guard !message.isEmpty else {
-                print("Test message is empty")
-                return
-            }
-            
-            let testModel = TestModel()
-            testModel.check(word: message, completionHandler: { succes in
-                if(succes) {
-                    self?.testMessageLabel.backgroundColor = .green
-                    return
-                }
-                self?.testMessageLabel.backgroundColor = .red
-            } )
-        }
+    
+    
+    // MARK: Handlers and private methods
+    @objc private func tappedButton(sender: UIButton ) {
+        let postVC = PostViewController(post: Post(title: "Post"))
+        NSLog("Go to %@", String(describing: PostViewController.self))
+        self.navigationController?.pushViewController(postVC, animated: true)
     }
 }

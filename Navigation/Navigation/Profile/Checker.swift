@@ -9,22 +9,22 @@ import Foundation
 
 /// @brief  Выполняет проверку введенного логина и пароля
 class Checker {
+    // MARK: Public properties
     static var shared: Checker = {
         let instance = Checker()
         return instance
     }()
     
-    // проверка введенных данных
-    func checker(login: String, passwd: String) -> Bool {
-        return self.login == login && self.passwd == passwd
-    }
-    
+    // MARK: Private properties
     private let login = "Anton"
     private let passwd = "Ivanov"
     
-    
-    // запрещаем создание обьекта через конструктор
     private init() {}
+    
+    // MARK: Public methods
+    func checker(login: String, passwd: String) -> Bool {
+        return self.login == login && self.passwd == passwd
+    }
 }
 
 extension Checker : NSCopying {

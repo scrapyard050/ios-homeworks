@@ -14,10 +14,11 @@ protocol LoginViewControllerDelegate: AnyObject {
 /// @brief Аутентификация пользователя
 ///
 class LogInViewController: UIViewController  {
-    
+    // MARK: Public properties
     var delegate: LoginViewControllerDelegate?
+    weak var coordinator: ProfileCoordinator?
     
-    //  логотип сервиса куда выполняется подключение
+    // MARK: Private properties
     private lazy var logo: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "logo")
@@ -62,7 +63,7 @@ class LogInViewController: UIViewController  {
     }()
     
     /// @todo поскольку кнопки разные, и чтобы не было хаоса с обработчиками
-    let custom = CustomButton(title: "Log in", tintColor: UIColor.white);
+    private let custom = CustomButton(title: "Log in", tintColor: UIColor.white);
     private(set) lazy var logButton = custom
     
     private(set) lazy var divider: UIView = {
@@ -72,54 +73,19 @@ class LogInViewController: UIViewController  {
         return divider
     }()
     
-    /// @brief обработчик нажатия кнопки логина
-    ///
-    func tapLoginButtonHandler() {
-        self.view.endEditing(true)
-        /// @todo по требованиям задачи нет описания для полей аватар и статус,
-        ///  То есть ннепонятно как они должны передаваться, как доджен создаваться обьект пользователя,  пока что передаем дефайны
-        ///  В условиях задачи ничего не сказано про верификацию имени пользователя
-        ///  Считаем что если хоть какие-то данные введены то используем для создания пользователя
-        guard let userName = loginTextFiled.text else {
-            return
-        }
+    
+    // MARK: Life cycle methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.prepareUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        let currentUserService = CurrentUserService(user: User(name: userName,
-                                                               avatar: Constants.infoNotDefined,
-                                                               status: Constants.infoNotDefined ))
-        
-        guard let passwd = passwordTextField.text else {
-            return
+        custom.onButtonTap = {
+            self.tapLoginButtonHandler()
         }
-        
-        guard let result =  delegate?.checker(login: userName, passwd: passwd) else {
-            return
-        }
-
-        if( !result) {
-            return
-        }
-        
-        // переходим к следующему окну если только прошла проверка введенного логина и пароя
-        self.navigationController?.pushViewController(ProfileViewController(userService: currentUserService, userName: userName), animated: true)
     }
     
-    @objc func handleKeyboardNotification(_ notification: Notification) {
-
-        guard let info = notification.userInfo else {
-            return
-        }
-
-        let keyboardFrame = (info[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
-        let keyBoardHeightConstraint = notification.name == UIResponder.keyboardWillShowNotification ? -keyboardFrame!.height : 0
-        UIView.animate(withDuration: 0.5, animations: { () -> Void in
-            self.setupLogoLayout()
-            self.setupContainerViewLayout()
-            self.setupLogButtonLayout(keyboardHeight: keyBoardHeightConstraint)
-            self.view.layoutIfNeeded()
-        })
-   }
-    
+    // MARK: Public methods
     /// @brief настройка констрейнтов логотипа
     ///
     func setupLogoLayout() {
@@ -194,15 +160,57 @@ class LogInViewController: UIViewController  {
         self.setupContainerViewLayout()
         self.setupLogButtonLayout(keyboardHeight: 0)
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.prepareUI()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        custom.onButtonTap = {
-            self.tapLoginButtonHandler()
+    
+    
+    // MARK: Hadnlers and private methods
+    
+    /// @brief обработчик нажатия кнопки логина
+    ///
+    private func tapLoginButtonHandler() {
+        self.view.endEditing(true)
+        /// @todo по требованиям задачи нет описания для полей аватар и статус,
+        ///  То есть ннепонятно как они должны передаваться, как доджен создаваться обьект пользователя,  пока что передаем дефайны
+        ///  В условиях задачи ничего не сказано про верификацию имени пользователя
+        ///  Считаем что если хоть какие-то данные введены то используем для создания пользователя
+        guard let userName = loginTextFiled.text else {
+            return
         }
+        
+        let currentUserService = CurrentUserService(user: User(name: userName,
+                                                               avatar: Constants.infoNotDefined,
+                                                               status: Constants.infoNotDefined ))
+        
+        guard let passwd = passwordTextField.text else {
+            return
+        }
+        
+        guard let result =  delegate?.checker(login: userName, passwd: passwd) else {
+            return
+        }
+
+        if( !result) {
+            return
+        }
+        
+        // переходим к следующему окну если только прошла проверка введенного логина и пароя
+        self.navigationController?.pushViewController(ProfileViewController(userService: currentUserService, userName: userName), animated: true)
     }
+    
+    @objc private func handleKeyboardNotification(_ notification: Notification) {
+
+        guard let info = notification.userInfo else {
+            return
+        }
+
+        let keyboardFrame = (info[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let keyBoardHeightConstraint = notification.name == UIResponder.keyboardWillShowNotification ? -keyboardFrame!.height : 0
+        UIView.animate(withDuration: 0.5, animations: { () -> Void in
+            self.setupLogoLayout()
+            self.setupContainerViewLayout()
+            self.setupLogButtonLayout(keyboardHeight: keyBoardHeightConstraint)
+            self.view.layoutIfNeeded()
+        })
+   }
 }
 
 
