@@ -61,18 +61,9 @@ class LogInViewController: UIViewController  {
         return containerView
     }()
     
-    // кнопка логина
-    private(set) lazy var logButton: UIButton = {
-        let logButton = UIButton()
-        logButton.setTitle("Log in", for: .normal)
-        logButton.tintColor = UIColor.white
-        logButton.setBackgroundImage(UIImage(named: "blue_pixel"), for: .normal)
-        logButton.layer.cornerRadius = 10
-        logButton.clipsToBounds = true
-        logButton.toAutoLayout()
-        logButton.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
-        return logButton
-    }()
+    /// @todo поскольку кнопки разные, и чтобы не было хаоса с обработчиками
+    let custom = CustomButton(title: "Log in", tintColor: UIColor.white);
+    private(set) lazy var logButton = custom
     
     private(set) lazy var divider: UIView = {
         let divider = UIView()
@@ -83,7 +74,7 @@ class LogInViewController: UIViewController  {
     
     /// @brief обработчик нажатия кнопки логина
     ///
-    @objc func tapLoginButton(sender: UIButton) {
+    func tapLoginButtonHandler() {
         self.view.endEditing(true)
         /// @todo по требованиям задачи нет описания для полей аватар и статус,
         ///  То есть ннепонятно как они должны передаваться, как доджен создаваться обьект пользователя,  пока что передаем дефайны
@@ -207,6 +198,10 @@ class LogInViewController: UIViewController  {
         super.viewDidLoad()
         self.prepareUI()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        custom.onButtonTap = {
+            self.tapLoginButtonHandler()
+        }
     }
 }
 

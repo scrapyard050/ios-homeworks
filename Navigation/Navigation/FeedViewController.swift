@@ -17,6 +17,34 @@ class FeedViewController: UIViewController {
     }
     
     
+  
+    /// поскольку макетов нету встроил компоненты в уже в имеющиюся верстку
+    private(set)lazy var testMessageLabel: UILabel = {
+        let testMessageLabel = UILabel()
+        testMessageLabel.text = "Check Result"
+        testMessageLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        testMessageLabel.textColor = .black
+        testMessageLabel.toAutoLayout()
+        return testMessageLabel
+    }()
+    
+    private lazy var testMessageTextFiled: UITextField = {
+        let testMessageTextFiled = UITextField.init(frame: .zero)
+        testMessageTextFiled.placeholder = "Enter message for check"
+        testMessageTextFiled.textColor = UIColor.black
+        testMessageTextFiled.font = UIFont.systemFont(ofSize: 16)
+        testMessageTextFiled.autocapitalizationType = .none
+        testMessageTextFiled.isSecureTextEntry = false
+        testMessageTextFiled.backgroundColor = .clear
+        testMessageTextFiled.textAlignment = .center
+        testMessageTextFiled.toAutoLayout()
+        return testMessageTextFiled
+    }()
+    
+    let custom = CustomButton(title: "TestMessage", tintColor: UIColor.white);
+    private(set) lazy var textMessageHandler = custom
+    
+    
     private(set) lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -29,6 +57,7 @@ class FeedViewController: UIViewController {
     }()
     
     func setupPostButton () {
+        
         // создаем кнопку
         let postButton1 = UIButton()
         // выставляем заголовки и цвет
@@ -45,6 +74,9 @@ class FeedViewController: UIViewController {
         
         stackView.addArrangedSubview(postButton1)
         stackView.addArrangedSubview(postButton2)
+        stackView.addArrangedSubview(self.testMessageLabel)
+        stackView.addArrangedSubview(self.testMessageTextFiled)
+        stackView.addArrangedSubview(self.textMessageHandler)
         self.view.addSubviews(stackView)
         
         // настраиваем констрейнты для отображения stackView по центру по центру
@@ -55,5 +87,24 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         self.setupPostButton()
+        custom.onButtonTap = { [weak self] in
+            guard let message = self?.testMessageTextFiled.text else {
+                return
+            }
+            
+            guard !message.isEmpty else {
+                print("Test message is empty")
+                return
+            }
+            
+            let testModel = TestModel()
+            testModel.check(word: message, completionHandler: { succes in
+                if(succes) {
+                    self?.testMessageLabel.backgroundColor = .green
+                    return
+                }
+                self?.testMessageLabel.backgroundColor = .red
+            } )
+        }
     }
 }
