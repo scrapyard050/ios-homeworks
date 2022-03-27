@@ -14,6 +14,10 @@ class CustomButton: UIButton {
         super.init(frame: .zero)
         self.setTitle(title, for: .normal)
         self.setTitleColor(tintColor, for: .normal)
+        self.setBackgroundImage(UIImage(named: "blue_pixel"), for: .normal)
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
+        self.toAutoLayout()
         self.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
         self.toAutoLayout()
     }

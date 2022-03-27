@@ -40,7 +40,6 @@ class MainCoordinator: BaseCoordinator, CoordinatableProtocol {
     
     private func prepareProfileCoordinator() {
         let login = LogInViewController()
-        login.delegate = MyLoginFactory().factoryMethod()
         let navigation = UINavigationController(rootViewController: login)
         let coordinator = ProfileCoordinator(navigationController: navigation)
         login.coordinator = coordinator

@@ -15,7 +15,6 @@ protocol LoginViewControllerDelegate: AnyObject {
 ///
 class LogInViewController: UIViewController  {
     // MARK: Public properties
-    var delegate: LoginViewControllerDelegate?
     weak var coordinator: ProfileCoordinator?
     
     // MARK: Private properties
@@ -80,9 +79,14 @@ class LogInViewController: UIViewController  {
         self.prepareUI()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        custom.onButtonTap = {
-            self.tapLoginButtonHandler()
+        custom.onButtonTap = { [weak self ] in
+            self?.view.endEditing(true)
+            self?.coordinator?.login(userName: self?.loginTextFiled.text,
+                                     passwd: self?.passwordTextField.text)
         }
+        
+        /// @todo из задачи нет условия как обратывать ошибки поэтому просто выводим лог
+        self.coordinator?.errorHandler = { print($0) }
     }
     
     // MARK: Public methods
@@ -163,39 +167,6 @@ class LogInViewController: UIViewController  {
     
     
     // MARK: Hadnlers and private methods
-    
-    /// @brief обработчик нажатия кнопки логина
-    ///
-    private func tapLoginButtonHandler() {
-        self.view.endEditing(true)
-        /// @todo по требованиям задачи нет описания для полей аватар и статус,
-        ///  То есть ннепонятно как они должны передаваться, как доджен создаваться обьект пользователя,  пока что передаем дефайны
-        ///  В условиях задачи ничего не сказано про верификацию имени пользователя
-        ///  Считаем что если хоть какие-то данные введены то используем для создания пользователя
-        guard let userName = loginTextFiled.text else {
-            return
-        }
-        
-        let currentUserService = CurrentUserService(user: User(name: userName,
-                                                               avatar: Constants.infoNotDefined,
-                                                               status: Constants.infoNotDefined ))
-        
-        guard let passwd = passwordTextField.text else {
-            return
-        }
-        
-        guard let result =  delegate?.checker(login: userName, passwd: passwd) else {
-            return
-        }
-
-        if( !result) {
-            return
-        }
-        
-        // переходим к следующему окну если только прошла проверка введенного логина и пароя
-        self.navigationController?.pushViewController(ProfileViewController(userService: currentUserService, userName: userName), animated: true)
-    }
-    
     @objc private func handleKeyboardNotification(_ notification: Notification) {
 
         guard let info = notification.userInfo else {
