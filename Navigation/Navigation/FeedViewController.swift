@@ -42,7 +42,7 @@ class FeedViewController: UIViewController {
     }()
     
     let custom = CustomButton(title: "TestMessage", tintColor: UIColor.white);
-    private(set) lazy var textMessageHandler = custom.button
+    private(set) lazy var textMessageHandler = custom
     
     
     private(set) lazy var stackView: UIStackView = {

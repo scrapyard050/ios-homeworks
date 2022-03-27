@@ -22,7 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let feed = UINavigationController(rootViewController: FeedViewController())
         feed.tabBarItem = UITabBarItem(title: "FEED", image: UIImage(named: "feed"), selectedImage: nil)
         
-        let profile = UINavigationController(rootViewController: LogInViewController())
+        let loginVC = LogInViewController()
+        loginVC.delegate = MyLoginFactory().factoryMethod()
+    
+        let profile = UINavigationController(rootViewController: loginVC)
         profile.tabBarItem = UITabBarItem(title: "PROFILE", image: UIImage(named: "profile"), selectedImage: nil)
     
         let tab = UITabBarController()
@@ -30,6 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = tab
         window.makeKeyAndVisible()
         self.window = window
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

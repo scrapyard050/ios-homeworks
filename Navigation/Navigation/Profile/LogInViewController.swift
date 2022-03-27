@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate: AnyObject {
+    func checker(login: String, passwd: String) -> Bool
+}
+
 /// @brief Аутентификация пользователя
 ///
 class LogInViewController: UIViewController  {
+    
+    var delegate: LoginViewControllerDelegate?
     
     //  логотип сервиса куда выполняется подключение
     private lazy var logo: UIImageView = {
@@ -57,7 +63,7 @@ class LogInViewController: UIViewController  {
     
     /// @todo поскольку кнопки разные, и чтобы не было хаоса с обработчиками
     let custom = CustomButton(title: "Log in", tintColor: UIColor.white);
-    private(set) lazy var logButton = custom.button
+    private(set) lazy var logButton = custom
     
     private(set) lazy var divider: UIView = {
         let divider = UIView()
@@ -82,6 +88,19 @@ class LogInViewController: UIViewController  {
                                                                avatar: Constants.infoNotDefined,
                                                                status: Constants.infoNotDefined ))
         
+        guard let passwd = passwordTextField.text else {
+            return
+        }
+        
+        guard let result =  delegate?.checker(login: userName, passwd: passwd) else {
+            return
+        }
+
+        if( !result) {
+            return
+        }
+        
+        // переходим к следующему окну если только прошла проверка введенного логина и пароя
         self.navigationController?.pushViewController(ProfileViewController(userService: currentUserService, userName: userName), animated: true)
     }
     
