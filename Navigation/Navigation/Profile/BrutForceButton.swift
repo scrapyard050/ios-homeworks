@@ -1,12 +1,13 @@
-////
-////  CustomButton.swift
-////  Navigation
-////
-////  Created by Антон Соколов on 13.03.2022.
-///
+//
+//  BrutForceButton.swift
+//  Navigation
+//
+//  Created by Антон Соколов on 03.04.2022.
+//
+
 import UIKit
 
-class CustomButton: UIButton {
+class BrutForceButton: UIButton {
     var onButtonTap: (() -> Void)?
     
     // перегруженный конструктор
