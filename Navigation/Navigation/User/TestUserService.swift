@@ -14,9 +14,7 @@ class TestUserService: UserService {
                             avatar: Constants.infoNotDefined,
                             status: Constants.infoNotDefined)
     
-    func user(name: String) -> User? {
+    func user(name: String) throws ->  User {
         return user
     }
-    
-    
 }

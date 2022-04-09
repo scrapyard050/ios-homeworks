@@ -13,11 +13,12 @@ class CurrentUserService : UserService {
         self.user = user
     }
     
-    func user(name: String) -> User? {
-        if user.name == name {
-            return user
+    func user(name: String) throws  -> User {
+        if user.name != name {
+            throw UserError.userNotFound
         }
-        return nil
+       
+        return self.user
     }
     
     

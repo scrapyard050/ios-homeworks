@@ -75,11 +75,19 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func userInfo() {
-        guard let user =  self.userService.user(name: self.userName) else {
+    func userInfo()  {
+        var user: User
+        do {
+            user =  try self.userService.user(name: self.userName)
+        }catch {
+            // В случае если не удалось найти пользователя отображаем ошибку в виде алерта
+            print("Error getting user")
+            let alert = UIAlertController( title: "User Info", message: "User not found", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
             return
         }
-        
+       
         print("User name: \(user.name)")
         print("User avatar: \(user.avatar)")
         print("User status: \(user.status)")
