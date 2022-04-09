@@ -18,6 +18,8 @@
 		1035D207271F7B1300F889D4 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1035D206271F7B1300F889D4 /* InfoViewController.swift */; };
 		10377A4527B933A800856764 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10377A4427B933A800856764 /* User.swift */; };
 		10377A4827B934C800856764 /* CurrentUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10377A4727B934C800856764 /* CurrentUserService.swift */; };
+		104581C527F9970100B3DE4D /* BrutForceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104581C427F9970100B3DE4D /* BrutForceButton.swift */; };
+		104581C727F99BEC00B3DE4D /* BrutForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104581C627F99BEC00B3DE4D /* BrutForce.swift */; };
 		10624DCB27B94D2B00D25A93 /* TestUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10624DCA27B94D2B00D25A93 /* TestUserService.swift */; };
 		1068814A27F081D7006E6840 /* ProfileModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1068814927F081D7006E6840 /* ProfileModule.swift */; };
 		10806E0C2732F4F7000BD9D8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */; };
@@ -29,6 +31,7 @@
 		10A8550C27EF7DC300ACC901 /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A8550B27EF7DC300ACC901 /* FeedCoordinator.swift */; };
 		10AC67F227355C8C0029A696 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AC67F127355C8C0029A696 /* LogInViewController.swift */; };
 		10AD4CB72801AD0700CD48BF /* UserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AD4CB62801AD0700CD48BF /* UserError.swift */; };
+		10AD4CB92801C63100CD48BF /* BruteForceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AD4CB82801C63100CD48BF /* BruteForceError.swift */; };
 		10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */; };
 		10F1FD5127963B9D007AF804 /* Defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD5027963B9D007AF804 /* Defines.swift */; };
 		10F5B486277496C20020A7FC /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F5B485277496C20020A7FC /* PostTableViewCell.swift */; };
@@ -52,6 +55,8 @@
 		1035D206271F7B1300F889D4 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		10377A4427B933A800856764 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		10377A4727B934C800856764 /* CurrentUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserService.swift; sourceTree = "<group>"; };
+		104581C427F9970100B3DE4D /* BrutForceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrutForceButton.swift; sourceTree = "<group>"; };
+		104581C627F99BEC00B3DE4D /* BrutForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrutForce.swift; sourceTree = "<group>"; };
 		10624DCA27B94D2B00D25A93 /* TestUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUserService.swift; sourceTree = "<group>"; };
 		1068814927F081D7006E6840 /* ProfileModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModule.swift; sourceTree = "<group>"; };
 		10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
@@ -63,6 +68,7 @@
 		10A8550B27EF7DC300ACC901 /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
 		10AC67F127355C8C0029A696 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		10AD4CB62801AD0700CD48BF /* UserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserError.swift; sourceTree = "<group>"; };
+		10AD4CB82801C63100CD48BF /* BruteForceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BruteForceError.swift; path = Navigation/Common/BruteForceError.swift; sourceTree = SOURCE_ROOT; };
 		10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		10F1FD5027963B9D007AF804 /* Defines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defines.swift; sourceTree = "<group>"; };
 		10F5B485277496C20020A7FC /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -133,7 +139,6 @@
 				10377A4427B933A800856764 /* User.swift */,
 				10377A4727B934C800856764 /* CurrentUserService.swift */,
 				10624DCA27B94D2B00D25A93 /* TestUserService.swift */,
-				10AD4CB62801AD0700CD48BF /* UserError.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -146,6 +151,8 @@
 				10AC67F127355C8C0029A696 /* LogInViewController.swift */,
 				1088793F27DE097500A9B0AD /* Checker.swift */,
 				1088794127DE0E1400A9B0AD /* LoginInspector.swift */,
+				104581C427F9970100B3DE4D /* BrutForceButton.swift */,
+				104581C627F99BEC00B3DE4D /* BrutForce.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -153,6 +160,8 @@
 		10F1FD4D27963579007AF804 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				10AD4CB82801C63100CD48BF /* BruteForceError.swift */,
+				10AD4CB62801AD0700CD48BF /* UserError.swift */,
 				101359C2271E28B300B04F8E /* SceneDelegate.swift */,
 				101359C0271E28B300B04F8E /* AppDelegate.swift */,
 				10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */,
@@ -249,6 +258,7 @@
 				10624DCB27B94D2B00D25A93 /* TestUserService.swift in Sources */,
 				1068814A27F081D7006E6840 /* ProfileModule.swift in Sources */,
 				1035D202271F6D6300F889D4 /* PostViewController.swift in Sources */,
+				104581C727F99BEC00B3DE4D /* BrutForce.swift in Sources */,
 				101359C1271E28B300B04F8E /* AppDelegate.swift in Sources */,
 				1088794627DE526200A9B0AD /* TestModel.swift in Sources */,
 				10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */,
@@ -262,6 +272,7 @@
 				10377A4527B933A800856764 /* User.swift in Sources */,
 				10AD4CB72801AD0700CD48BF /* UserError.swift in Sources */,
 				1088794027DE097500A9B0AD /* Checker.swift in Sources */,
+				10AD4CB92801C63100CD48BF /* BruteForceError.swift in Sources */,
 				1088794227DE0E1400A9B0AD /* LoginInspector.swift in Sources */,
 				101359D5271E2A4300B04F8E /* FeedViewController.swift in Sources */,
 				1035D204271F774800F889D4 /* Post.swift in Sources */,
@@ -272,6 +283,7 @@
 				1088794427DE1D9D00A9B0AD /* CustomButton.swift in Sources */,
 				101359C3271E28B300B04F8E /* SceneDelegate.swift in Sources */,
 				10806E0C2732F4F7000BD9D8 /* ProfileHeaderView.swift in Sources */,
+				104581C527F9970100B3DE4D /* BrutForceButton.swift in Sources */,
 				10F5B48927749F3E0020A7FC /* ExtendedPost.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
