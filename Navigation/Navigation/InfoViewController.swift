@@ -8,8 +8,27 @@
 import UIKit
 
 class InfoViewController: UIViewController {
+    // MARK: Life cycle methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setupButton()
+    }
     
-    @objc func tappedAlertButton(sender: UIButton) {
+    // MARK: Public methods
+    func setupButton() {
+        let alertButton = UIButton(frame: CGRect(x: 20, y: 20, width: 100, height: 60))
+        alertButton.setTitle("Alert", for: .normal)
+        alertButton.backgroundColor = UIColor.red
+        // задаем обработчик
+        alertButton.addTarget(self, action: #selector(self.tappedAlertButton), for: .touchUpInside)
+        // так же выравниваем по центру, чтобы не перегружать констрейнтами или анчорами
+        alertButton.center = self.view.center
+        self.view.addSubviews(alertButton)
+    }
+    
+    
+    // MARK: Handlers and private methods
+    @objc private func tappedAlertButton(sender: UIButton) {
         NSLog("Show alert")
         let alert = UIAlertController(title: "Alert", message: "Go back?", preferredStyle: .alert)
         let ok = UIAlertAction(title: "YES", style: .default, handler: { _ in
@@ -30,22 +49,4 @@ class InfoViewController: UIViewController {
             NSLog("Alert is shown")
         }
     }
-    
-    func setupButton() {
-        let alertButton = UIButton(frame: CGRect(x: 20, y: 20, width: 100, height: 60))
-        alertButton.setTitle("Alert", for: .normal)
-        alertButton.backgroundColor = UIColor.red
-        // задаем обработчик
-        alertButton.addTarget(self, action: #selector(self.tappedAlertButton), for: .touchUpInside)
-        // так же выравниваем по центру, чтобы не перегружать констрейнтами или анчорами
-        alertButton.center = self.view.center
-        self.view.addSubviews(alertButton)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.setupButton()
-    }
-    
-
 }
