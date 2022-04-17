@@ -22,6 +22,7 @@
 		104581C727F99BEC00B3DE4D /* BrutForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104581C627F99BEC00B3DE4D /* BrutForce.swift */; };
 		10624DCB27B94D2B00D25A93 /* TestUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10624DCA27B94D2B00D25A93 /* TestUserService.swift */; };
 		1068814A27F081D7006E6840 /* ProfileModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1068814927F081D7006E6840 /* ProfileModule.swift */; };
+		106E9374280C0A8300BEB5F9 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106E9373280C0A8300BEB5F9 /* NetworkService.swift */; };
 		10806E0C2732F4F7000BD9D8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */; };
 		1088794027DE097500A9B0AD /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1088793F27DE097500A9B0AD /* Checker.swift */; };
 		1088794227DE0E1400A9B0AD /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1088794127DE0E1400A9B0AD /* LoginInspector.swift */; };
@@ -59,6 +60,7 @@
 		104581C627F99BEC00B3DE4D /* BrutForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrutForce.swift; sourceTree = "<group>"; };
 		10624DCA27B94D2B00D25A93 /* TestUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUserService.swift; sourceTree = "<group>"; };
 		1068814927F081D7006E6840 /* ProfileModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModule.swift; sourceTree = "<group>"; };
+		106E9373280C0A8300BEB5F9 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		10806E0B2732F4F7000BD9D8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		1088793F27DE097500A9B0AD /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 		1088794127DE0E1400A9B0AD /* LoginInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		101359BF271E28B300B04F8E /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				106E9372280C09CC00BEB5F9 /* Network */,
 				10FCB1D127EBAAB20092AE40 /* Coordinator */,
 				10377A4627B934AE00856764 /* User */,
 				10F1FD4D27963579007AF804 /* Common */,
@@ -141,6 +144,14 @@
 				10624DCA27B94D2B00D25A93 /* TestUserService.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		106E9372280C09CC00BEB5F9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				106E9373280C0A8300BEB5F9 /* NetworkService.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		10806E0F2732F570000BD9D8 /* Profile */ = {
@@ -263,6 +274,7 @@
 				1088794627DE526200A9B0AD /* TestModel.swift in Sources */,
 				10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */,
 				10AC67F227355C8C0029A696 /* LogInViewController.swift in Sources */,
+				106E9374280C0A8300BEB5F9 /* NetworkService.swift in Sources */,
 				101359D7271E2A5300B04F8E /* ProfileViewController.swift in Sources */,
 				10FCB1D027EBAAA40092AE40 /* Coordinatable.swift in Sources */,
 				1035D207271F7B1300F889D4 /* InfoViewController.swift in Sources */,
