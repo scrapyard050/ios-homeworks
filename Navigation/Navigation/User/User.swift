@@ -8,7 +8,7 @@
 import Foundation
 
 protocol UserService {
-    func user(name: String) -> User?
+    func user(name: String) throws -> User
 }
 
 /// модель пользователя

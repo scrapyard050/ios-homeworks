@@ -57,4 +57,29 @@ class ProfileModule {
     }
     
     
+    func bruteForce(completionHandler: @escaping(Result<String, BruteForceError>) -> Void ) {
+        let brutForceService = BrutForceService()
+        let password = brutForceService.generateRandomPassword()
+        guard !password.isEmpty else {
+            completionHandler(.failure(.generatedEmptyPassword))
+            return
+        }
+        
+        let workItem = DispatchWorkItem {
+            brutForceService.bruteForce(passwordToUnlock:password)
+        }
+        
+        // после окончания работы в главном потоке выводим результат в UI
+        workItem.notify(queue: DispatchQueue.main) {
+            print("Operation Completed")
+            completionHandler(.success(brutForceService.passwordData()))
+        }
+        
+        // ставим задачу на исполнение в глобальную очередь
+        let task = DispatchQueue.global(qos: .background)
+        print("Starting of Brute force password")
+        task.async(execute: workItem)
+       
+    }
+    
 }

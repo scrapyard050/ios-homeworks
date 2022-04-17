@@ -65,6 +65,9 @@ class LogInViewController: UIViewController  {
     private let custom = CustomButton(title: "Log in", tintColor: UIColor.white);
     private(set) lazy var logButton = custom
     
+    let bruteForce = BrutForceButton(title: "Brute force", tintColor: UIColor.white)
+    private(set) lazy var brutForceButton = bruteForce
+
     private(set) lazy var divider: UIView = {
         let divider = UIView()
         divider.backgroundColor = .systemGray
@@ -72,22 +75,13 @@ class LogInViewController: UIViewController  {
         return divider
     }()
     
-    
-    // MARK: Life cycle methods
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.prepareUI()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        custom.onButtonTap = { [weak self ] in
-            self?.view.endEditing(true)
-            self?.coordinator?.login(userName: self?.loginTextFiled.text,
-                                     passwd: self?.passwordTextField.text)
-        }
-        
-        /// @todo из задачи нет условия как обратывать ошибки поэтому просто выводим лог
-        self.coordinator?.errorHandler = { print($0) }
-    }
+    // индикатор прогреса
+    private(set) lazy var indicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .medium)
+        view.color = .black
+        view.toAutoLayout()
+        return view
+    }()
     
     // MARK: Public methods
     /// @brief настройка констрейнтов логотипа
@@ -128,9 +122,26 @@ class LogInViewController: UIViewController  {
         NSLayoutConstraint.activate(constraints)
        
         if( 0 != keyboardHeight) {
-            self.logButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
+            self.logButton.bottomAnchor.constraint(equalTo: self.bruteForce.topAnchor, constant: -5).isActive = true
         }
     }
+    
+    /// @brief Настройка кнопки подбора пароля
+    ///
+    func setupBrutForceLayout(keyboardHeight: CGFloat) {
+        let constraints = [
+            self.brutForceButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.defaultMargin),
+            self.brutForceButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.defaultMargin),
+            self.brutForceButton.topAnchor.constraint(equalTo: self.logButton.bottomAnchor, constant: 5),
+            self.brutForceButton.heightAnchor.constraint(equalToConstant: Constants.logButtonHeight)
+        ]
+        NSLayoutConstraint.activate(constraints)
+       
+        if( 0 != keyboardHeight) {
+            self.brutForceButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: keyboardHeight).isActive = true
+        }
+    }
+    
     
     func prepareUI() {
         self.navigationController?.navigationBar.isHidden = true
@@ -138,11 +149,15 @@ class LogInViewController: UIViewController  {
         
         self.view.addSubviews(self.logo,
                               self.containerView,
-                              self.logButton)
+                              self.logButton,
+                              self.brutForceButton)
+        
+        self.passwordTextField.addSubviews(self.indicatorView)
         
         self.containerView.addSubviews(self.loginTextFiled,
                                        self.divider,
                                        self.passwordTextField)
+    
         let constraints = [
             self.loginTextFiled.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor, constant: Constants.loginTextFiledLeftMargin),
             self.loginTextFiled.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor),
@@ -155,7 +170,7 @@ class LogInViewController: UIViewController  {
             self.passwordTextField.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor),
             self.passwordTextField.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor),
             self.passwordTextField.topAnchor.constraint(equalTo: self.divider.bottomAnchor, constant: Constants.passwordTextFieldTopMargin),
-            self.passwordTextField.heightAnchor.constraint(equalToConstant: Constants.inputAuthDataTextFiledHeight)
+            self.passwordTextField.heightAnchor.constraint(equalToConstant: Constants.inputAuthDataTextFiledHeight),
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -163,8 +178,8 @@ class LogInViewController: UIViewController  {
         self.setupLogoLayout()
         self.setupContainerViewLayout()
         self.setupLogButtonLayout(keyboardHeight: 0)
+        self.setupBrutForceLayout(keyboardHeight: 0)
     }
-    
     
     // MARK: Hadnlers and private methods
     @objc private func handleKeyboardNotification(_ notification: Notification) {
@@ -182,6 +197,38 @@ class LogInViewController: UIViewController  {
             self.view.layoutIfNeeded()
         })
    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.prepareUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        custom.onButtonTap = { [weak self ] in
+                 self?.view.endEditing(true)
+                 self?.coordinator?.login(userName: self?.loginTextFiled.text,
+                                          passwd: self?.passwordTextField.text)
+             }
+             
+        /// @todo из задачи нет условия как обратывать ошибки поэтому просто выводим лог
+        ///  это старый код, еще до прохождения темы обработка ошибок
+        ///  не стал его трогать поскольку нет такого условия в задачи
+        self.coordinator?.errorHandler = { print($0) }
+        
+        self.bruteForce.onButtonTap = { [weak self] in
+            // Сервис для подбора пароля
+            self?.coordinator?.bruteForce(completionHandler: { result in
+                switch result {
+                case .failure(.generatedEmptyPassword):
+                    print("Error of generate password")
+                case .success(let password):
+                    self?.indicatorView.stopAnimating()
+                    self?.passwordTextField.text = password
+                    self?.passwordTextField.isSecureTextEntry = false
+                }
+            })
+            self?.indicatorView.startAnimating()
+            
+        }
+    }
 }
 
 

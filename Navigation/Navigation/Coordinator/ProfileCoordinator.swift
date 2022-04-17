@@ -30,4 +30,7 @@ class ProfileCoordinator: CoordinatableProtocol {
         self.profileModule.login(userName: userName, passwd: passwd)
     }
     
+    func bruteForce(completionHandler: @escaping(Result<String, BruteForceError>) -> Void) {
+        self.profileModule.bruteForce(completionHandler: completionHandler)
+    }
 }
