@@ -35,6 +35,10 @@
 		10AC67F227355C8C0029A696 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AC67F127355C8C0029A696 /* LogInViewController.swift */; };
 		10AD4CB72801AD0700CD48BF /* UserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AD4CB62801AD0700CD48BF /* UserError.swift */; };
 		10AD4CB92801C63100CD48BF /* BruteForceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AD4CB82801C63100CD48BF /* BruteForceError.swift */; };
+		10ECB612282F971F0043731B /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ECB611282F971F0043731B /* DocumentsViewController.swift */; };
+		10ECB614282F97690043731B /* DocumentsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ECB613282F97690043731B /* DocumentsCoordinator.swift */; };
+		10ECB617282F9E180043731B /* FileManagerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ECB616282F9E180043731B /* FileManagerWrapper.swift */; };
+		10ECB619282FC0650043731B /* DocumentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ECB618282FC0640043731B /* DocumentsTableViewCell.swift */; };
 		10F1FD4F279635E5007AF804 /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */; };
 		10F1FD5127963B9D007AF804 /* Defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F1FD5027963B9D007AF804 /* Defines.swift */; };
 		10F5B486277496C20020A7FC /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F5B485277496C20020A7FC /* PostTableViewCell.swift */; };
@@ -75,6 +79,10 @@
 		10AC67F127355C8C0029A696 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		10AD4CB62801AD0700CD48BF /* UserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserError.swift; sourceTree = "<group>"; };
 		10AD4CB82801C63100CD48BF /* BruteForceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BruteForceError.swift; path = Navigation/Common/BruteForceError.swift; sourceTree = SOURCE_ROOT; };
+		10ECB611282F971F0043731B /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
+		10ECB613282F97690043731B /* DocumentsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsCoordinator.swift; sourceTree = "<group>"; };
+		10ECB616282F9E180043731B /* FileManagerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerWrapper.swift; sourceTree = "<group>"; };
+		10ECB618282FC0640043731B /* DocumentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsTableViewCell.swift; sourceTree = "<group>"; };
 		10F1FD4E279635E5007AF804 /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		10F1FD5027963B9D007AF804 /* Defines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defines.swift; sourceTree = "<group>"; };
 		10F5B485277496C20020A7FC /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -114,6 +122,7 @@
 		101359BF271E28B300B04F8E /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				10ECB615282F9E050043731B /* FileManager */,
 				109D88E92811FBE6007FB130 /* Data */,
 				106E9372280C09CC00BEB5F9 /* Network */,
 				10FCB1D127EBAAB20092AE40 /* Coordinator */,
@@ -122,6 +131,8 @@
 				10806E0F2732F570000BD9D8 /* Profile */,
 				1035D206271F7B1300F889D4 /* InfoViewController.swift */,
 				101359D4271E2A4300B04F8E /* FeedViewController.swift */,
+				10ECB611282F971F0043731B /* DocumentsViewController.swift */,
+				10ECB618282FC0640043731B /* DocumentsTableViewCell.swift */,
 				1035D205271F7A1B00F889D4 /* Post */,
 				101359C9271E28B700B04F8E /* Assets.xcassets */,
 				101359CB271E28B700B04F8E /* LaunchScreen.storyboard */,
@@ -182,6 +193,14 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		10ECB615282F9E050043731B /* FileManager */ = {
+			isa = PBXGroup;
+			children = (
+				10ECB616282F9E180043731B /* FileManagerWrapper.swift */,
+			);
+			path = FileManager;
+			sourceTree = "<group>";
+		};
 		10F1FD4D27963579007AF804 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +225,7 @@
 				10A8550927EF7D9C00ACC901 /* ProfileCoordinator.swift */,
 				10A8550B27EF7DC300ACC901 /* FeedCoordinator.swift */,
 				1068814927F081D7006E6840 /* ProfileModule.swift */,
+				10ECB613282F97690043731B /* DocumentsCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -283,6 +303,7 @@
 				10624DCB27B94D2B00D25A93 /* TestUserService.swift in Sources */,
 				1068814A27F081D7006E6840 /* ProfileModule.swift in Sources */,
 				1035D202271F6D6300F889D4 /* PostViewController.swift in Sources */,
+				10ECB612282F971F0043731B /* DocumentsViewController.swift in Sources */,
 				104581C727F99BEC00B3DE4D /* BrutForce.swift in Sources */,
 				101359C1271E28B300B04F8E /* AppDelegate.swift in Sources */,
 				109D88EB28120246007FB130 /* HttpResponse.swift in Sources */,
@@ -294,6 +315,8 @@
 				10FCB1D027EBAAA40092AE40 /* Coordinatable.swift in Sources */,
 				1035D207271F7B1300F889D4 /* InfoViewController.swift in Sources */,
 				10A8550A27EF7D9C00ACC901 /* ProfileCoordinator.swift in Sources */,
+				10ECB614282F97690043731B /* DocumentsCoordinator.swift in Sources */,
+				10ECB619282FC0650043731B /* DocumentsTableViewCell.swift in Sources */,
 				10FCB1D527EBB20B0092AE40 /* BaseCoorinatorOperations.swift in Sources */,
 				10A8550C27EF7DC300ACC901 /* FeedCoordinator.swift in Sources */,
 				10377A4527B933A800856764 /* User.swift in Sources */,
@@ -303,6 +326,7 @@
 				10AD4CB92801C63100CD48BF /* BruteForceError.swift in Sources */,
 				1088794227DE0E1400A9B0AD /* LoginInspector.swift in Sources */,
 				101359D5271E2A4300B04F8E /* FeedViewController.swift in Sources */,
+				10ECB617282F9E180043731B /* FileManagerWrapper.swift in Sources */,
 				1035D204271F774800F889D4 /* Post.swift in Sources */,
 				10FCB1D727EBB35F0092AE40 /* MainCoordinator.swift in Sources */,
 				10F5B486277496C20020A7FC /* PostTableViewCell.swift in Sources */,

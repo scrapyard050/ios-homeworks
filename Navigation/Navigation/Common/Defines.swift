@@ -26,4 +26,9 @@ public struct Constants {
     static let avatarLabelBottomMargin = 5.0
     static let postImageTopMargin = 12.0
     static let infoNotDefined = "Not defined"
+    static let addPhoto = "Add Photo"
+    static let addPleasePhoto = "Please add photo"
+    static let documentsDir = "Documents"
+    static let ok = "OK"
+    
 }
