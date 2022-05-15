@@ -20,6 +20,7 @@ class MainCoordinator: BaseCoordinator, CoordinatableProtocol {
     // MARK: Public methods
     /// @brief Настройка цепочки координаторов и главного окна
     func start() {
+        self.prepareDocumentsCoordinator()
         self.prepareFeedCoordinator()
         self.prepareProfileCoordinator()
         self.prepareTabs()
@@ -30,6 +31,14 @@ class MainCoordinator: BaseCoordinator, CoordinatableProtocol {
     }
     
     // MARK: Private methods
+    private func prepareDocumentsCoordinator() {
+        let documents = DocumentsViewController()
+        let navigation = UINavigationController(rootViewController: documents)
+        let coordinator = DocumentsCoordinator(navigationController: navigation)
+        documents.titleInfo = Constants.documentsDir
+        self.addCoordinator(child: coordinator)
+    }
+    
     private func prepareFeedCoordinator() {
         let feed = FeedViewController()
         let navigation = UINavigationController(rootViewController: feed)
